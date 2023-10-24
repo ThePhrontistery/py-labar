@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "pylabar"
+version = "0.1.0"
+description = "py-labar is a fast and convenient ways to get the opinion of people on various topics, implemented in Python"
+authors = ["Andres Sanchez Rodriguez <andres.sanchez-rodriguez@capgemini.com>",
+    "Paola Patricia Vargas Chocron <paola-patricia.vargas-chocron@capgemini.com>",
+    "Juan Jose Arbona Alapont <juan-jose.arbona-alapont@capgemini.com>"]
+
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
