@@ -4,5 +4,5 @@ py-labar is a fast and convenient ways to get the opinion of people on various t
 ## Requirements
 
 Make sure you have the following components installed before running the application:
-- Python 3.12.0po
+- Python 3.12.0
 - Poetry 1.6.1
