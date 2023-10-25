@@ -1,6 +1,6 @@
-from fastapi import APIRouter
+from fastapi import FastAPI
 
-router = APIRouter()
+app = FastAPI()
 
 mock_users = [
     {"id": 1, "username": "pchocron", "name": "Paola Chocron"},
@@ -26,5 +26,5 @@ def get_user_by_id(user_id: int):
     """
     user = next((u for u in mock_users if u["id"] == user_id), None)
     if user is None:
-        return {"error": "Usuario no encontrado"}
+        return "Usuario no encontrado"
     return user
