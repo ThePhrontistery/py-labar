@@ -8,7 +8,7 @@ mock_users = [
     {"id": 3, "username": "andsanchez", "name": "Andrés Sánchez"},
 ]
 
-@router.get("/user_data")
+@app.get("/user_data")
 def get_users():
     """
     This route (endpoint) allows a client to retrieve all user data from the mock dataset. The path for this endpoint is //user_data
@@ -17,7 +17,7 @@ def get_users():
     """
     return mock_users
 
-@router.get("/user/{user_id}")
+@app.get("/user/{user_id}")
 def get_user_by_id(user_id: int):
     """
     Retrieve a specific user's information by their ID.
