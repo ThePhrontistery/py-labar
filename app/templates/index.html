@@ -9,9 +9,9 @@
     <h1>Lista de Usuarios</h1>
     <ul>
         {% for user in user_data %}
-            <li>{{user.id}}: {{ user.username }}</li>
+            <li>{{user.id}}: {{ user.name }}</li>
         {% endfor %}
     </ul>
-    <p>{{user_id.username}}</p>
+    <p>{{user_id.name}}</p>
 </body>
 </html>
