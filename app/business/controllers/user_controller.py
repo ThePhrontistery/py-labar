@@ -6,7 +6,6 @@ mock_users = [
     {"id": 1, "username": "pchocron", "name": "Paola Chocron"},
     {"id": 2, "username": "jjarbona", "name": "Juan Arbona"},
     {"id": 3, "username": "andsanchez", "name": "Andrés Sánchez"},
-    {"id": 3, "username": None, "name": None},
 ]
 
 @router.get("/user_data")

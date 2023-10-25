@@ -18,5 +18,5 @@ async def read_root(request: Request):
     This function is also passing the user_data and user_id to the index.html template.
     """
     user_data = user_controller.get_users()
-    user_id = user_controller.get_user_by_id(2)
+    user_id = user_controller.get_user_by_id(4)
     return templates.TemplateResponse("index.html", {"request": request, "user_data": user_data, "user_id": user_id})
