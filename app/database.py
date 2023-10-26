@@ -1,15 +1,19 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Column, Integer, String
 
-# Configura la URL de conexión a la base de datos PostgreSQL
-DATABASE_URL = "postgresql://postgres:postgre_2023@localhost:5432/ai_labar"
+DATABASE_URL = "sqlite:///./test.db"  # El nombre del archivo de la base de datos SQLite
 
-# Crea una instancia del motor SQLAlchemy
 engine = create_engine(DATABASE_URL)
 
-# Crea una sesión de SQLAlchemy
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Crea una instancia de Base para declarar modelos SQLAlchemy
 Base = declarative_base()
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+    email = Column(String, unique=True, index=True)
