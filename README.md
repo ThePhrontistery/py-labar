@@ -24,6 +24,7 @@ To install dependencies run
 ```bash
 poetry install
 ```
+
 in same folder where your `.toml` file is located. 
 Poetry will take care of:
 - Installing the required Python interpreter 
