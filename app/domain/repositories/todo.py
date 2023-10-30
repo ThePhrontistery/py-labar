@@ -7,7 +7,7 @@ from sqlmodel.sql.expression import Select, select
 from app.common.base.base_repository import BaseSQLRepository
 from app.common.exceptions.http import NotFoundException
 from app.common.infra.sql_adaptors import get_session, get_async_session, AsyncSession
-from app.domain.todo_management.models import Todo
+from app.domain.models import Todo
 
 
 class TodoSQLRepository(BaseSQLRepository[Todo]):

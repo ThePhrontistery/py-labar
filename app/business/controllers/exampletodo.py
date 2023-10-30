@@ -2,8 +2,8 @@ import logging
 
 from fastapi import APIRouter, Depends
 
-from app.business.todo_management.models.todo import PendingTodosResponse, TodoDto, CreateTodoRequest
-from app.business.todo_management.services.todo import TodoService
+from app.business.models.todo import PendingTodosResponse, TodoDto, CreateTodoRequest
+from app.business.services.todo import TodoService
 
 router = APIRouter(prefix="/todo")
 

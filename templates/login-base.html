@@ -1,0 +1,44 @@
+<!doctype html>
+<html data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../static/faviconcapgemini.ico'">
+    <title>Alabar</title>
+    <script src="https://unpkg.com/htmx.org@1.8.5"
+            integrity="sha384-7aHh9lqPYGYZ7sTHvzP1t3BAfLhYSTy9ArHdP3Xsr9/3TlGurYgcPBoFmXX2TX/w"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.2/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.cdnfonts.com/css/bebas-neue" rel="stylesheet">
+    <style>
+        .alabartitle {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+    </style>
+</head>
+
+ <body class="bg-blue-100">
+    <header class="bg-blue-500 text-white py-4">
+        <div class="container mx-auto">
+            <h1 class="text-xl font-bold ">Alabar</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="mx-auto max-w-screen-md">
+            <div class="w-full mx-auto">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-blue-500 text-white py-4 mt-auto">
+        <div class="container mx-auto">
+            <p class="text-center">Copyright 2023 - Capgemini</p>
+        </div>
+    </footer>
+
+
+</body>
+</html>
