@@ -1,18 +1,20 @@
-import logging
-from fastapi import FastAPI
-import uvicorn
-
-# Init Logger for this Class
-from app.common.core import get_global_settings
-from app.common.core.configuration import get_log_config
-from app.common.infra.sql_adaptors import init_db_entities, get_db_settings
+from fastapi import FastAPI, Form, Depends, HTTPException
+from starlette.status import HTTP_303_SEE_OTHER
+from starlette.responses import RedirectResponse
+from app.business.controllers import UserController  # Import the user controller
+from app.common.infra.database import get_db  # Import the database session provider
+from sqlalchemy.orm import Session
 
 app = FastAPI()
 
-logger = logging.getLogger(__name__)
-
-if __name__ == "__main__":
-    # import entities to init
-    from app.domain.models import *  # Type: ignore
-    init_db_entities(get_db_settings())
-    uvicorn.run("app.api:api", host="localhost", port=get_global_settings().port, log_config=get_log_config(), reload=True)
+@app.post("/login")
+async def login(username: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
+    user_controller = UserController(db)
+    user = user_controller.authenticate_user(username, password)
+    if user is None:
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
+    # If user is authenticated, redirect to home
+    response = RedirectResponse(url="/home", status_code=HTTP_303_SEE_OTHER)
+    # Here you should set up a secure session or token to keep the user logged in
+    # For example, using JWT tokens or secure cookies
+    return response

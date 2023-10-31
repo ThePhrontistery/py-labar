@@ -2,12 +2,24 @@ from fastapi import Depends, FastAPI, Form, HTTPException, Request, status
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.status import HTTP_303_SEE_OTHER
+from starlette.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from app.common.infra.database import SessionLocal, Base, engine
 from app.domain.schemas.user import UserCreate, UserResponse
 from app.business.services.user_service import create_user, authenticate_user
+from app.business.controllers.controller import UserController
+from app.common.infra.database import get_db  # Import the database session provider
+from sqlalchemy.orm import Session
+from jose import JWTError, jwt
+from datetime import datetime, timedelta
 
 app = FastAPI()
+
+# Secret key to encode JWT - should be kept secret and safe
+SECRET_KEY = "your-secret-key"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -18,9 +30,18 @@ templates = Jinja2Templates(directory="templates")
 # Initialize database tables
 Base.metadata.create_all(bind=engine)
 
+#Upon successful authentication, generate a JWT token to maintain the user session.
+def create_access_token(data: dict, expires_delta: timedelta | None = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
 # Dependency to get the database session
-
-
 def get_db():
     db = SessionLocal()
     try:
@@ -44,17 +65,22 @@ def create_user_route(user: UserCreate, db: Session = Depends(get_db)):
     return db_user
 
 
-@app.post('/login')
-async def login(request: Request, username: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
-    user = authenticate_user(db=db, username=username, password=password)
-    if not user:
-        error = 'Invalid username or password'
-        return templates.TemplateResponse("login.html", {"request": request, "error": error})
-
-    # Your session management logic here
-    # ... e.g., setting a secure cookie with user information
-
-    return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
+@app.post("/login")
+async def login(username: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
+    user_controller = UserController(db)
+    user = user_controller.authenticate_user(username, password)
+    if user is None:
+        return templates.TemplateResponse("index.html", {"request": request, "error": "Incorrect username or password"})
+    
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+    response = RedirectResponse(url="/home", status_code=status.HTTP_303_SEE_OTHER)
+    response.set_cookie(
+        key="access_token", value=f"Bearer {access_token}", httponly=True
+    )
+    return response
 
 @app.get("/register", name="register_user")
 async def register_user(request: Request):
