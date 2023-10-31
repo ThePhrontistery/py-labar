@@ -1,37 +1,14 @@
-import logging
-from enum import Enum
+# File: app/Common/infra/__init__.py
 
-from pydantic import ValidationError
+# Import the database session factory and the base class for models here.
+# This allows other parts of your application to import these directly
+# from the infra package instead of having to import them from the database module.
+from .database import SessionLocal, Base, init_db
 
-from app.common.core.configuration import load_env_file_on_settings
-from app.common.infra.gcp.firebase import FirebaseSettings, get_firebase_settings, FirebaseService
-from app.common.core.identity_provider import IdentityProvider
-from app.common.infra.keycloak.keycloak import KeycloakSettings, get_keycloak_settings, KeycloakService
+# Optionally, you can also import your models here if you want them to be accessible
+# from infra. However, this could lead to circular imports if your models themselves
+# import infra components, so be cautious with this.
+# from .models import User, AnotherModel
 
-
-logger = logging.getLogger(__name__)
-
-
-class IDPType(Enum):
-    KEYCLOAK = KeycloakService, KeycloakSettings
-    FIREBASE = FirebaseService, FirebaseSettings
-
-
-def __get_idp() -> tuple[IdentityProvider, IDPType]:
-    """Factory that creates the instance of the Identity Provider given the app configuration"""
-    for idp_enum_value in IDPType:
-        try:
-            service_type, settings_type = idp_enum_value.value
-            settings = load_env_file_on_settings(settings_type)  # Throws ValidationError
-        except ValidationError:
-            pass
-        else:
-            logger.info(f"Initializing IDP of type {service_type}")
-            return service_type(settings), idp_enum_value
-    return None, None
-
-
-idp_configuration = __get_idp()
-
-idp: IdentityProvider = idp_configuration[0]
-idp_type: IDPType = idp_configuration[1]
+# If there are any other infrastructure components you'd like to be easily accessible,
+# you can import them here as well.

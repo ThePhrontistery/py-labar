@@ -1,84 +1,42 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>FastAPI App</title>
-</head>
-<body>
-    <h1>Hello, World!</h1>
+{% extends 'login-base.html' %}
 
-    <h1>Lista de Usuarios</h1>
-    <ul>
-        {% for user in user_data %}
-           <li>{{user.id}}: {{ user.name }}</li>
-        {% endfor %}
-    </ul>
-    <p>{{user_id.name}}</p>
+{% block content %}
 
-    <h1>Crear Usuario</h1>
-    <form id="user-form">
-        <label for="username">Nombre de usuario:</label>
-        <input type="text" id="username" name="username" required><br>
+<div class="flex flex-col items-center justify-center h-screen">
+  <div class="bg-white p-10 rounded-lg shadow-lg">
+    <img class="w-10 h-10 mx-auto" src="{{ url_for('static', path='/logopylabar.png') }}" alt="PyLabar Logo">
+    <h2 class="text-xl font-bold my-3 text-center">Alabar - Log in</h2>
+    
+    {% if error %}
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-5" role="alert">
+        <strong class="font-bold">{{ error }}</strong>
+    </div>
+    {% endif %}
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
-
-        <button type="submit">Crear Usuario</button>
+    <form action="{{ url_for('login') }}" method="POST">
+        <div class="mb-5">
+            <label class="block font-bold mb-2" for="user_code">User</label>
+            <input class="w-full px-3 py-2 border border-gray-300 rounded" type="text" name="username" id="user_code" required>
+        </div>
+        <div class="mb-5">
+            <label class="block font-bold mb-2" for="password">Password</label>
+            <input class="w-full px-3 py-2 border border-gray-300 rounded" type="password" name="password" id="password" required>
+        </div>
+        <div class="mb-3 text-center">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type="submit">Log in</button>
+        </div>
     </form>
 
-    <div id="result"></div>
+    <div class="text-center mt-4">
+        <!-- Forgot Password Link -->
+        <a href="{{ url_for('forgot_password') }}" class="text-sm text-blue-600 hover:underline">Forgot Password?</a>
+    </div>
 
-    <script>
-        document.getElementById('user-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const formData = new FormData(this);
-            const user = {
-                username: formData.get('username'),
-                email: formData.get('email')
-            };
+    <div class="text-center mt-4">
+        <!-- Register User Button -->
+        <a href="{{ url_for('register_user') }}" class="text-sm text-blue-600 hover:underline">Register User</a>
+    </div>
+  </div>
+</div>
 
-            fetch('/create_user/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(user)
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('result').innerHTML = data.message;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        });
-    </script>
-
-
-<h1>Ver Usuarios</h1>
-
-    <button id="get-users-button">Obtener Usuarios</button>
-
-    <ul id="user-list"></ul>
-
-    <script>
-        const userList = document.getElementById('user-list');
-        const getUsersButton = document.getElementById('get-users-button');
-
-        getUsersButton.addEventListener('click', () => {
-            fetch('/users/')
-                .then(response => response.json())
-                .then(data => {
-                    userList.innerHTML = ''; // Limpia la lista anterior
-                    data.forEach(user => {
-                        const listItem = document.createElement('li');
-                        listItem.textContent = `ID: ${user.id}, Username: ${user.username}, Email: ${user.email}`;
-                        userList.appendChild(listItem);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        });
-    </script>
-</body>
-</html>
+{% endblock %}

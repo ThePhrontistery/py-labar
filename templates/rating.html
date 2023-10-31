@@ -1,0 +1,76 @@
+{% extends '/base.html' %}
+
+{% block content %}
+
+<h1 class="text-xl font-bold">{{topic.title_topic}}</h1>
+
+{% if topic.status == False or current_date >= db_end_date %}
+<div class="grid grid-cols-2 gap-8">
+    {% if results.average_answer != 0 %}
+    <div class="flex flex-col items-center">
+        <span class="text-8xl">{{results.average_answer.emoji}}</span>
+        <span class="text-lg mt-4">{{results.average_answer.text}}</span>
+    </div>
+    {%else%}
+    <div class="flex flex-col items-center">
+        <span class="text-8xl"></span>
+        <span class="text-lg mt-4">No hay votos</span>
+    </div>
+    {%endif%}
+    <div class="space-y-4">
+        {% for answer in results.answers %}
+        <div class="flex items-center">
+            <span class="text-2xl">{{answer.emoji}}</span>
+            <span class="font-bold text-xl ml-2">{{answer.count}}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% elif topic_ticket.completed == False%} 
+<!--  form  -->
+
+
+<form action="{{ url_for('pylabar.rating_results') }}" method="POST">
+    <input type="hidden" name="topic_id" value={{topic.id_topic}}>
+    <!--pre>{{ topic.id_topic | pprint }}</pre-->
+    <div class="space-y-4">
+        <div class="flex items-center">
+            <input type="radio" name="emoji" id="emoji1" class="form-radio h-5 w-5 text-blue-600" value="1">
+            <label for="emoji1" class="text-2xl ml-2">😃</label>
+        </div>
+        <div class="flex items-center">
+            <input type="radio" name="emoji" id="emoji2" class="form-radio h-5 w-5 text-blue-600" value="2">
+            <label for="emoji2" class="text-2xl ml-2">😊</label>
+        </div>
+        <div class="flex items-center">
+            <input type="radio" name="emoji" id="emoji3" class="form-radio h-5 w-5 text-blue-600" value="3">
+            <label for="emoji3" class="text-2xl ml-2">😐</label>
+        </div>
+        <div class="flex items-center">
+            <input type="radio" name="emoji" id="emoji4" class="form-radio h-5 w-5 text-blue-600" value="4">
+            <label for="emoji4" class="text-2xl ml-2">🙁</label>
+        </div>
+        <div class="flex items-center">
+            <input type="radio" name="emoji" id="emoji5" class="form-radio h-5 w-5 text-blue-600" value="5">
+            <label for="emoji5" class="text-2xl ml-2">😭</label>
+        </div>
+    </div>
+    <div class="mt-8 flex justify-end space-x-4">
+        <button type="button" class="btn btn-outline btn btn-primary"><a href="/" class="btn btn-sm btn-ghost">Cancel</a></button>
+        <button type="submit" class="btn btn-outline btn btn-primary">Save</button>
+    </div>
+</form>
+{% elif topic_ticket == None%}
+<div>
+    <span>No esta en el grupo para votar</span>
+</div>
+{%else%}
+<div>
+    <span>Ya has contestado</span>
+</div>
+{%endif%}
+
+{% endblock %}
+
+

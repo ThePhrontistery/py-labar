@@ -1,0 +1,47 @@
+{% extends '/base.html' %}
+
+{% block content %}
+
+    <h1 class="text-xl font-bold">{{topic.title_topic}}</h1>
+    <br></br>
+    {% if topic.status == False or current_date >= db_end_date %}
+        <div class="grid grid-cols-2 gap-8">
+            <div class="space-y-4">
+                {% for answer in results %}
+                    <div class="flex items-center">
+                        <span class="text-xl ml-2">({{answer.count}})&nbsp;&nbsp;&nbsp;</span>
+                        <span class="text-xl ml-2">{{answer.text}}</span>      
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    {% elif topic_ticket.completed == False%} 
+        <form action="{{ url_for('pylabar.mct_results') }}" method="POST">
+            <input type="hidden" name="topic_id" value={{topic.id_topic}}>
+            <div class="space-y-4">
+                {% for topic_item in topic_items %}
+                    <div class="flex items-center">
+                        <input type="checkbox" name="selected_item[]" id="item-{{loop.index0}}" class="form-radio h-5 w-5 text-blue-600" value={{topic_item.id_order}}>
+                        <label for="item-{{loop.index0}}" class="text-2xl ml-2">{{topic_item.text_answers}}</label>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="mt-8 flex justify-end space-x-4">
+                <button type="button" class="btn btn-outline btn btn-primary"><a href="/" class="btn btn-sm btn-ghost">Cancel</a></button>
+                <button type="submit" class="btn btn-outline btn btn-primary">Save</button>
+            </div>
+        </form>
+    {% elif topic_ticket == None%}
+        <div>
+            <span>No esta en el grupo para votar</span>
+        </div>
+    {%else%}
+        <div>
+            <span>Ya has contestado</span>
+        </div>
+    {%endif%}
+
+{% endblock %}
+
+

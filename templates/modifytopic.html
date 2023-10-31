@@ -1,0 +1,27 @@
+{% extends '/base.html' %}
+{% block content %}
+
+
+<h1 class="text-xl font-bold">Modify Topic end_date</h1>
+    <div class="flex mt-4">
+
+        <form action="{{ url_for('pylabar.modify_topic') }}" method="POST">
+            <input type="hidden" name="id_topic" value={{topic.id_topic}}>
+            <label>Titulo del topic: </label> 
+            <label class="bg-grey shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker">{{topic.title_topic}}</label>
+            <br> </br>
+            <label for="datetime">Introducir fecha de fin del topic:</label>
+            <input type="datetime-local" id="datetime" name="end_date" value="{{ selected_datetime }}" required>
+            <br> </br>
+            <label>Type Topic: </label>
+            <label class="bg-grey shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker">{{topic.type_topic}}</label>
+            <br> </br>
+      
+            <button type="submit" class="btn btn-outline btn btn-primary">Save</button>
+            <button type="button" class="btn btn-outline btn btn-primary"><a href="/" class="btn btn-sm btn-ghost">Cancel</a></button>
+        </form>
+
+    </div>
+
+
+{% endblock %}

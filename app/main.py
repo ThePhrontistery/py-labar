@@ -1,70 +1,88 @@
-from typing import Annotated
 from fastapi import Depends, FastAPI, Form, HTTPException, Request, status
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi import FastAPI
-from .database import Base, engine, User
-from sqlalchemy.orm import Session
-from app.domain.schemas.user import UserCreate, User
-
-from app.business.controllers import user_controller
 from fastapi.staticfiles import StaticFiles
+from sqlalchemy.orm import Session
+from app.common.infra.database import SessionLocal, Base, engine
+from app.domain.schemas.user import UserCreate, UserResponse
+from app.business.services.user_service import create_user, authenticate_user
 
 app = FastAPI()
+
+# Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Configura Jinja2 para cargar plantillas desde el directorio 'templates'
+# Jinja2 templates directory configuration
 templates = Jinja2Templates(directory="templates")
 
-# Crear las tablas en la base de datos
-Base.metadata.create_all(bind=engine) 
+# Initialize database tables
+Base.metadata.create_all(bind=engine)
 
-# Ruta principal para renderizar la plantilla HTML
+# Dependency to get the database session
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
 @app.get("/", response_class=HTMLResponse)
-
 async def read_root(request: Request):
-    """
-    Read_root function in main.py is fetching user_data and user_id using the controllers\\user_controller.py
-    This function is also passing the user_data and user_id to the index.html template.
-    """
-    user_data = user_controller.get_users_mock() 
-    user_id = user_controller.get_user_by_id(1)
-    return templates.TemplateResponse("login.html", {"request": request, "user_data": user_data, "user_id": user_id})
+    # Assuming you have a function to get user data in usercontroller
+    # This is just a placeholder
+    user_data = "Sample user data"
+    user_id = 1
+    return templates.TemplateResponse("index.html", {"request": request, "user_data": user_data, "user_id": user_id})
 
 
-@app.post("/create_user/", response_model=dict)
-def create_user_route(user: UserCreate):
-    return user_controller.create_user(user)
+@app.post("/create_user/", response_model=UserResponse)
+def create_user_route(user: UserCreate, db: Session = Depends(get_db)):
+    db_user = create_user(db=db, user=user)
+    return db_user
 
 
-@app.get("/users/", response_model=list[User])
-def get_users():
-    users = user_controller.get_users()
-    return users
-
-@app.get("/users/{name}", response_model=User)
-def get_user_by_name(name: str):
-    for user in get_users():
-        if user.username == name:
-            return user
-    raise HTTPException(status_code=404, detail="Usuario no encontrado")
-
-
-# Definición de la ruta en FastAPI
 @app.post('/login')
-async def login(request: Request, user_code: str = Form(...), password: str = Form(...)):
-    error = None
-
-    user = get_user_by_name(user_code)
-
-    if user is None:
-        error = 'Invalid user or password'
+async def login(request: Request, username: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
+    user = authenticate_user(db=db, username=username, password=password)
+    if not user:
+        error = 'Invalid username or password'
         return templates.TemplateResponse("login.html", {"request": request, "error": error})
 
-    # Tu lógica de autenticación es correcta, establece la sesión
-    # Reemplaza esto con tu propia lógica de autenticación
-    session = request.session
-    session['CURRENT_USER'] = user_code
+    # Your session management logic here
+    # ... e.g., setting a secure cookie with user information
 
-    # Redirecciona al usuario a otra página después de la autenticación (por ejemplo, 'index')
-    return RedirectResponse(url="/index", status_code=status.HTTP_303_SEE_OTHER)
+    return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
+
+@app.get("/register", name="register_user")
+async def register_user(request: Request):
+    # Your registration page logic here
+    return templates.TemplateResponse("register.html", {"request": request})
+
+@app.post("/register", name="register_user")
+async def register_user(request: Request, username: str = Form(...), email: str = Form(...), password: str = Form(...)):
+    # Your logic to handle user registration goes here
+    # ...
+    return templates.TemplateResponse("registration_successful.html", {"request": request})
+
+@app.get("/forgot-password", name="forgot_password")
+async def forgot_password(request: Request):
+    # Your forgot password logic here
+    return templates.TemplateResponse("forgot_password.html", {"request": request})
+
+@app.post("/forgot-password", name="forgot_password")
+async def forgot_password(request: Request, email: str = Form(...)):
+    # Your logic to handle password reset (e.g., sending a reset email) goes here
+    # ...
+    return templates.TemplateResponse("password_reset_sent.html", {"request": request})
+
+# Add additional routes as needed
+# ...
+
+# If you're going to use this file as a script, you might want to add a conditional block
+# to run the application only if this script is executed as the main module.
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

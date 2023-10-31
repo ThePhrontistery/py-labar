@@ -1,0 +1,16 @@
+
+  {% for usergroup in usersgroup %}  
+  <div class="items-center">
+    <!--pre>{{ usergroup.id_user | pprint }}</pre-->
+    <!--pre>{{ usergroup.name_user | pprint }}</pre-->
+    <table>      
+      <tr>
+        <td width="300px">
+          
+          <p class="w-full text-grey-darkest">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                              {{ usergroup.name_user}}</p>  
+        </td>
+      </tr>
+    </table>
+  </div>
+  {% endfor %}
