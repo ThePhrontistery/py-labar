@@ -16,7 +16,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 # This function creates a new user with a hashed password.
-def create_user_service(db: Session, user: UserCreate) -> User:
+def create_user(db: Session, user: UserCreate) -> User:
     """
     Create a new user in the database.
 

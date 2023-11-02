@@ -9,7 +9,6 @@ from app.common.infra.database import SessionLocal, Base, engine
 from app.domain.schemas.user import UserCreate, UserResponse
 from app.business.services.user_service import create_user, authenticate_user
 from app.business.controllers.controller import UserController
-from app.common.infra.database import get_db  # Import the database session provider
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
@@ -66,7 +65,7 @@ def create_user_route(user: UserCreate, db: Session = Depends(get_db)):
 
 
 @app.post("/login")
-async def login(username: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
+async def login(request: Request, username: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
     user_controller = UserController(db)
     user = user_controller.authenticate_user(username, password)
     if user is None:

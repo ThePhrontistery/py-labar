@@ -10,13 +10,13 @@ import bcrypt
 from sqlalchemy.orm import Session
 from app.domain.models.models import User
 
-from app.business.services.user_service import create_user_service, get_user_by_id_service, get_all_users_service
+from app.business.services.user_service import create_user, get_user_by_id_service, get_all_users_service
 from app.domain.schemas.user import UserCreate, UserResponse
 from sqlalchemy.orm import Session
 
 def create_user_controller(user: UserCreate, db: Session) -> UserResponse:
     # Use the service layer function to create a new user.
-    return create_user_service(db=db, user=user)
+    return create_user(db=db, user=user)
 
 def get_user_by_id_controller(user_id: int, db: Session) -> UserResponse:
     # Use the service layer function to retrieve a user by ID.
