@@ -1,16 +1,21 @@
+# File: app/main.py
+# Standard library imports
+from datetime import datetime, timedelta
+
+# Related third-party imports
 from fastapi import Depends, FastAPI, Form, HTTPException, Request, status
-from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
-from starlette.status import HTTP_303_SEE_OTHER
-from starlette.responses import RedirectResponse
+from fastapi.templating import Jinja2Templates
+from pydantic import ValidationError
 from sqlalchemy.orm import Session
-from app.common.infra.database import SessionLocal, Base, engine
-from app.domain.schemas.user import UserCreate, UserResponse
-from app.business.services.user_service import create_user, authenticate_user
+
+# Local application/library-specific imports
 from app.business.controllers.controller import UserController
-from sqlalchemy.orm import Session
-from datetime import datetime, timedelta
+from app.business.services.user_service import authenticate_user, create_user, get_user_by_username_service
+from app.common.infra.database import init_db, SessionLocal
+from app.domain.schemas.user import UserCreate, UserResponse
+from app.common.core.security import get_password_hash
 
 app = FastAPI()
 
@@ -20,20 +25,6 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # Jinja2 templates directory configuration
 templates = Jinja2Templates(directory="templates")
 
-# Initialize database tables
-Base.metadata.create_all(bind=engine)
-
-
-#Upon successful authentication, generate a JWT token to maintain the user session.
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
 
 # Dependency to get the database session
 def get_db():
@@ -43,9 +34,9 @@ def get_db():
     finally:
         db.close()
 
-# Password context for hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
+@app.on_event("startup")
+def on_startup():
+    init_db()
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
@@ -85,29 +76,16 @@ async def register_user(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
 @app.post("/register", response_class=HTMLResponse)
-async def register_user(
-    request: Request,
-    username: str = Form(...),
-    email: str = Form(...),
-    password: str = Form(...),
-    db: Session = Depends(get_db)
-):
-    # Check if user already exists
-    #db_user = get_user_by_username(db, username=username)
-    #if db_user:
-    #    return templates.TemplateResponse("register.html", {"request": request, "error": "Username is already registered"})
+async def register(request: Request, username: str = Form(...), email: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
+    db_user = get_user_by_username_service(db, username=username)
+    if db_user:
+        return templates.TemplateResponse("register.html", {"request": request, "error": "Username is already registered"})
     
-    # Hash the user password
-    #hashed_password = pwd_context.hash(password)
-    
-    # Create new user model instance
-    user = UserCreate(username=username, email=email, password=password)
-    
-    # Save the new user to the database
+    hashed_password = get_password_hash(password)
+    user = UserCreate(username=username, email=email, hashed_password=hashed_password)
     create_user(db=db, user=user)
-    
-    # Redirect to login or home page after successful registration
     return RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+
 
 @app.get("/forgot-password", name="forgot_password")
 async def forgot_password(request: Request):
@@ -123,7 +101,7 @@ async def forgot_password(request: Request, email: str = Form(...)):
 # Add additional routes as needed
 # ...
 
-# If you're going to use this file as a script, you might want to add a conditional block
+# Conditional end block
 # to run the application only if this script is executed as the main module.
 if __name__ == "__main__":
     import uvicorn

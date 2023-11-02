@@ -3,8 +3,7 @@
 The controller.py file in app/business/controllers directory is designed to interact with the service layer, 
 which contains the core business logic. In a clean architecture, the controller's role is to take in HTTP requests, 
 delegate processing to the services, and then return the appropriate HTTP responses. 
-It acts as a glue between the HTTP interface and service layer, 
-ensure that the service layer doesn't have to deal with the specifics of HTTP.
+It acts as a glue between the HTTP interface and service layer.
 """
 import bcrypt
 from sqlalchemy.orm import Session

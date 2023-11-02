@@ -1,15 +1,25 @@
-# File: app/Common/infra/database.py
-# SQLAlchemy is used here as the ORM and Alembic for migrations.
+# File: app/common/infra/database.py
+
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.pool import StaticPool
+import os
 
-# The DATABASE_URL should be kept in environment variables for security purposes
-# and not hard-coded in your source code.
-DATABASE_URL = "sqlite:///./test.db"  # The SQLite database file name.
+# The DATABASE_URL should be obtained from environment variables for security purposes.
+# os.getenv allows us to get the environment variable value.
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
+
+# When using SQLite, the following argument can be added to use a StaticPool,
+# which is necessary if you're planning to use the app with concurrency.
+# For other database engines (e.g., PostgreSQL), you would remove it.
+engine_options = {}
+if "sqlite" in DATABASE_URL:
+    engine_options["connect_args"] = {"check_same_thread": False}
+    engine_options["poolclass"] = StaticPool
 
 # Creating the SQLAlchemy engine that will interact with the database.
-engine = create_engine(DATABASE_URL)
+engine = create_engine(DATABASE_URL, **engine_options)
 
 # Creating a configured "SessionLocal" class which will serve as a factory for
 # new Session objects. It's called "SessionLocal" to distinguish it from the
@@ -20,19 +30,28 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 # Define the User model by inheriting from the Base class.
-# This class uses the SQLAlchemy ORM to map the model attributes to the database table.
 class User(Base):
     __tablename__ = "users"  # Database table name.
 
-    # Here we define columns for the table user.
-    # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
-    password = Column(String, index=True)  # Passwords must be hashed!
+    hashed_password = Column(String)  # Storing hashed passwords
 
-# This is a good place to add methods for database initialization, like creating tables.
-def init_db():
-    # This method will create all tables by using the Base.metadata.create_all method,
-    # ensuring that the tables and the database are properly set up.
+# Methods for handling database operations
+def init_db() -> None:
+    """
+    Initializes the database by creating all tables based on the declarative base.
+    """
     Base.metadata.create_all(bind=engine)
+
+def get_db() -> Session:
+    """
+    Dependency that can be used to get a database session.
+    Ensures that the session is closed after use.
+    """
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

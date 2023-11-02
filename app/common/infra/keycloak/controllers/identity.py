@@ -1,3 +1,5 @@
+"""
+
 from typing import Optional, List
 
 from fastapi import APIRouter, Depends, Body, Query
@@ -159,3 +161,4 @@ def get_user_groups(user_id: str):
 @router.delete("/users/{user_id}/groups", tags=["user-groups"])
 def delete_groups_from_user(user_id: str, group_id: str):
     return idp.remove_user_group(user_id=user_id, group_id=group_id)
+"""

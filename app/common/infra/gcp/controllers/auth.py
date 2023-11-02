@@ -1,3 +1,4 @@
+"""
 import logging
 from firebase_admin import auth
 from fastapi import APIRouter, Depends
@@ -35,3 +36,4 @@ def login(user: EmailPassword = Depends(), firebase_config: FirebaseSettings = D
         f"https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key={api_key}",
         json={"email": user.email, "password": user.password, "returnSecureToken": "true"})
     return res.json()
+"""
