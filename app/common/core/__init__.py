@@ -29,7 +29,7 @@ def get_api(routers: List[APIRouter]):
     # Configure CORS
     configure_cors(app_settings, api)
     # Init infra
-    from app.common.infra import idp
-    if idp is not None:
-        idp.configure_api(api)
+    # from app.common.infra import idp
+    # if idp is not None:
+    #     idp.configure_api(api)
     return api
