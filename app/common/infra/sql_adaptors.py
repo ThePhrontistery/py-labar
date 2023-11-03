@@ -1,4 +1,3 @@
-"""
 from functools import lru_cache
 from typing import Any, Mapping, Optional, Sequence, TypeVar, Union
 from fastapi import Depends
@@ -60,10 +59,9 @@ def get_async_db_uri(db_settings: DatabaseSettings = Depends(get_db_settings)) -
 
 _T = TypeVar("_T")
 
-"""
-"""
+
 class AsyncSession(_AsyncSession):
-    "" Provisional Wrapper for Async Session ""
+    """ Provisional Wrapper for Async Session """
     async def exec(
             self,
             statement: Union[Select[_T], Executable[_T], SelectOfScalar[_T]],
@@ -114,5 +112,3 @@ async def get_async_session(engine: AsyncEngine = Depends(get_async_db_engine)):
 def init_db_entities(db: DatabaseSettings):
     engine = get_db_engine(db, get_db_uri(db))
     SQLModel.metadata.create_all(engine)
-
-"""
