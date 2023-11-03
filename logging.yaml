@@ -4,9 +4,6 @@ disable_existing_loggers: False
 formatters:
   simple:
     format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-  cloud_run:
-    format: "%(name)-30s: %(message)s"
-    class: app.common.infra.gcp.cloud_logging.CloudRunJSONFormatter
 
 handlers:
   console:
