@@ -1,7 +1,7 @@
 import logging
 
-from fastapi import APIRouter, Depends
-from fastapi import Depends, FastAPI, Form, Request, status
+from fastapi import APIRouter
+from fastapi import Depends, Form, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
@@ -9,7 +9,7 @@ from app.business.users.models.user import CreateUserRequest
 from app.business.users.services.user import UserService
 
 # TODO ASR
-router = APIRouter(prefix="/user")
+router = APIRouter()
 
 logger = logging.getLogger(__name__)
 
