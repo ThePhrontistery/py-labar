@@ -14,3 +14,4 @@ if __name__ == "__main__":
     from app.domain.users.models import *  # Type: ignore
     init_db_entities(get_db_settings())
     uvicorn.run("app.api:api", host="localhost", port=get_global_settings().port, log_config=get_log_config(), reload=True)
+    # uvicorn.run("app.api:api", host="localhost", port=get_global_settings().port, reload=True)
