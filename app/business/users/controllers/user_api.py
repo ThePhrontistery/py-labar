@@ -30,10 +30,3 @@ logger = logging.getLogger(__name__)
 #     return None
 
 
-# @router.post("/create", description="Creates a new User", response_model=HTMLResponse)
-# async def create_user(request: Request, username: str = Form(...), email: str = Form(...), password: str = Form(...),
-#                       user_service=Depends(UserService)):
-#     create_user_request = CreateUserRequest(username=username, email=email, password=password)
-#     logger.info("Creating a new User")
-#     await user_service.create_user(create_user_request)
-#     return RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
