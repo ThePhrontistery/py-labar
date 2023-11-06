@@ -16,7 +16,8 @@ class UserService:
         self.user_repository = repository
 
     async def create_user(self, create_req: CreateUserRequest) -> User:
-        raw_new_user = await self.user_repository.create()
+        raw_new_user = await self.user_repository.create(create_req = create_req)
+        #raw_new_user = await self.user_repository.create(CreateUserRequest)
         # TODO ASR hacer mapeo de User (Database) a User (Dto)
         # todo_dto = parse_to_dto(raw_new_todo)
         return raw_new_user
