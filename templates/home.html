@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="text-xl font-bold pylabartitle">Available topics for you</h1>
+
+<table class="table-auto w-full mt-4">
+  <!-- head -->
+  <thead class="bg-blue-500 text-white">
+    <tr>
+      <th class="px-4 py-2">Title</th>
+      <th class="px-4 py-2">Status</th>
+      <th class="px-4 py-2">Owner</th>
+      <th class="px-4 py-2">End Date</th>
+      <th class="px-4 py-2"></th>
+      <th class="px-4 py-2"></th>
+      <th class="px-4 py-2"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for topic in table_topics %}
+    <tr class="tr_index">
+      <td>
+        <!-- Topic Links -->
+        {% if topic.type_topic == 'MultipleChoiceTextTopic' %}            
+          <a href="{{ url_for('multiple_choice_text', topic_id=topic.id_topic) }}">{{ topic.title_topic }}</a>            
+        {% elif topic.type_topic == 'RatingTopic' %}
+          <a href="{{ url_for('rating', topic_id=topic.id_topic) }}">{{ topic.title_topic }}</a>
+        {% else %}
+          <span>{{ topic.title_topic }}</span>
+        {% endif %}
+      </td>
+      
+      <!-- Topic Status -->
+      <td>
+        {% if topic.status and current_date < topic.end_date %}
+          <span>Open - please vote</span>
+        {% else %}
+          <span>Closed - view results</span>
+        {% endif %}
+      </td>
+      
+      <!-- Topic Owner -->
+      <td>{{ topic.id_owner }}</td>
+      
+      <!-- Topic End Date -->
+      <td>{{ topic.end_date.strftime('%d-%m-%Y') }}</td>
+      
+      <!-- Actions -->
+      {% if session['CURRENT_USER'] == topic.id_owner %}
+        <td>
+          {% if not topic.status or current_date >= topic.end_date %}
+            <a href="{{ url_for('reopen', topic_id=topic.id_topic) }}" class="btn btn-xs btn-primary">Reopen</a>
+          {% else %}
+            <span>—</span>
+          {% endif %}
+        </td>
+        <td>
+          <a href="{{ url_for('delete', topic_id=topic.id_topic) }}" class="btn btn-xs btn-error">Delete</a>
+        </td>
+        <td>
+          {% if topic.status and current_date < topic.end_date %}
+            <a href="{{ url_for('close', topic_id=topic.id_topic) }}" class="btn btn-xs btn-secondary">Close</a>
+          {% else %}
+            <span>—</span>
+          {% endif %}
+        </td>
+      {% else %}
+        <td colspan="3">—</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

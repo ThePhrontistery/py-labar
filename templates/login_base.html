@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', path='/favicon.ico') }}">
+    <title>♠  PyLabar</title>
+    <script src="https://unpkg.com/htmx.org"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-blue-100">
+    <header class="bg-blue-500 text-white py-4">
+        <div class="container mx-auto">
+            <h1 class="text-xl font-bold pylabartitle">♠  PyLabar</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="mx-auto max-w-screen-md">
+            <div class="w-full mx-auto">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-blue-500 text-white py-4 mt-auto">
+        <div class="container mx-auto">
+            <p class="text-center">&copy;  2023 - ♠ Pylabar ♠</p>
+        </div>
+    </footer>
+</body>
+</html>

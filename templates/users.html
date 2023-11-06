@@ -1,0 +1,29 @@
+
+{% for topic_ticket_user in topic_ticket_user %}
+<div class="flex mb-4 items-center">  
+  <form class="flex">
+      <!--pre>{{ topic_id | pprint }}</pre>-->
+      <!--<pre>{{ topic_ticket_user.id_user | pprint }}</pre>-->
+      <table>
+        <tr>
+          <td width="300px">
+            <input type="hidden" value="{{topic_id}}" name="topic_id"></input>
+            <input type="hidden" value="{{topic_ticket_user.id_user}}" name="id_user"></input>
+            <p class="w-full text-grey-darkest">{{ topic_ticket_user.name_user}}</p>
+          </td>
+          <td width="300px">
+            <a href="#" hx-post="{{ url_for('pylabar.delete_user') }}" hx-trigger="click" hx-target="#users-container" class="btn btn-outline btn btn-primary" align="right">Delete user</a>
+          </td>
+        </tr>
+      </table>
+  </form>
+  </div>   
+{% endfor %}
+{%if mensajeerror != ""%}
+  <div class="alert alert-info shadow-lg">
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+      <span>{{mensajeerror}}</span>
+    </div>
+  </div>
+{% endif%}

@@ -1,0 +1,107 @@
+{% extends '/base.html' %}
+{% block content %}
+
+{% if topic.id_topic is none %} <!--Si entra a crear el topic (el id no existe)-->
+    <h1 class="text-xl font-bold">Create New Topic</h1>
+
+    <div class="flex mt-4">
+
+        <form action="{{ url_for('pylabar.save_topic') }}" method="POST">
+            <label>Enter topic title:</label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker" name="title_topic" required>
+            <br> </br>
+            <label for="datetime">Enter topic end date:</label>
+            <input type="datetime-local" id="datetime" name="end_date" value="{{ selected_datetime }}">
+            <br> </br>
+            <div class="form-group">
+                <label for="topic-select">Choose Type Topic:</label>
+                <select id="topic-select" name="typetopic" class="select select-primary w-full max-w-xs" required>
+                    {% for typetopic in typetopics %}
+                    <option value="{{typetopic}}">{{typetopic}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <br> </br>
+            <button type="submit" class="btn btn-outline btn btn-primary">Save</button>
+            <button type="button" class="btn btn-outline btn btn-primary"><a href="/" class="btn btn-sm btn-ghost">Cancel</a></button>
+        </form>
+
+    </div>
+{%else%} <!--Si el topic ya se ha salvado (existe id_topic), presentamos datos y creamos topic_item-->
+    <div >
+              
+            <form>
+                <fieldset>
+                    <legend>Topic data</legend>                  
+                    <label>Topic title: </label> 
+                    <label class="bg-grey shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker">{{topic.title_topic}}</label>
+                    <br> </br>
+                    <label>Topic end date: </label>
+                    <label class="bg-grey shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker">{{topic.end_date}}</label>
+                    <br> </br>
+                    <label>Type Topic: </label>
+                    <label class="bg-grey shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker">{{topic.type_topic}}</label>
+                    <br> </br>
+                </fieldset> 
+            </form> 
+            <form>
+                <fieldset>              
+                    <legend>Add group and/or users to topic</legend>            
+                    <div class="form-group">
+                        <input type="hidden" name="id_topic" value={{topic.id_topic}}>
+                        <label for="group-select" class="text-l">Choose group </label>
+                        <select id="group-select" hx-get="{{ url_for('pylabar.usersgroup') }}" hx-trigger="change" hx-target="#usersgroup-container" name="id_group" class="select select-primary w-full max-w-xs">
+                            {% for group in groups %}
+                               <option value="{{ group.id_group }}">{{ group.name_group }}</option>
+                            {% endfor %}
+                        </select>
+                            <button hx-post="{{ url_for('pylabar.add_usersgroup') }}" hx-trigger="click" hx-target="#users-container" class="btn btn-outline btn btn-primary">Add group</button>                        
+                            <button hx-post="{{ url_for('pylabar.delete_usersgroup') }}" hx-trigger="click" hx-target="#users-container" class="btn btn-outline btn btn-primary">Delete group</button>                        
+                    </div>
+                    &nbsp;&nbsp;
+                    <div id="usersgroup-container">
+                        {% include 'users_group.html' %}
+                    </div>                 
+                    <br> </br>
+            </form>
+            <form>                 
+                <div>
+                        <input type="hidden" name="id_topic" value={{topic.id_topic}}>               
+                    <!--    <input class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker" name="name_user" placeholder="Add user" id="name_user">--> 
+                        <label for="users-select" class="text-l">Add user for Topic</label>
+                        <select id="users-select" name="id_user" hx-trigger="change" class="select select-primary w-full max-w-xs">
+                            {% for user_list in users_list %}
+                               <option value="{{ user_list.id_user }}">{{ user_list.name_user }}</option>
+                            {% endfor %}
+                        </select>
+  
+                        <button hx-post="{{ url_for('pylabar.add_user') }}" hx-trigger="click" hx-target="#users-container" class="btn btn-outline btn btn-primary">Add user</button>
+                        <br></br>
+                    </div>                                             
+                </fieldset>   
+                <fieldset>
+                    <legend>Users added to topic</legend>                                     
+                    <div id="users-container">
+                        {% include 'users.html' %}
+                    </div>
+                    <br> </br>
+                </fieldset>
+            </form>
+            <form>                    
+                    {% if topic.type_topic != 'RatingTopic' %}
+                      <fieldset> 
+                        <legend>Create Items for Topic </legend>    
+                        <input type="hidden" name="id_topic" value={{topic.id_topic}}>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker" name="text_answers" placeholder="Add item" required>
+                        <button hx-post="{{ url_for('pylabar.add_item') }}" hx-trigger="click" hx-target="#items-container" class="btn btn-outline btn btn-primary">Add item</button>
+                        <br> </br>
+                        <div id="items-container">
+                            {% include 'items.html' %}
+                        </div>        
+                      </fieldset>                        
+                    {%endif%}
+            </form>  
+    </div>
+{%endif%}
+
+{% endblock %}
