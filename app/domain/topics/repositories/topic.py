@@ -23,13 +23,13 @@ class TopicSQLRepository(BaseSQLRepository[Topic]):
         await self.add(model=new_topic)
         return new_topic
 
-    async def edit(self, topic_id: UUID, title: str, type: str, question: str, author: str, groupId: str, close_date: str) -> Topic:
+    async def edit(self, topic_id: UUID, title: str, type: str, question: str, author: str, group_id: str, close_date: str) -> Topic:
         topic = await self.get(uid=topic_id)
         topic.title = title
         topic.type = type
         topic.question = question
         topic.author = author
-        topic.groupId = groupId
+        topic.group_id = group_id
         topic.close_date = close_date
         await self.save(model=topic, refresh=True)
         return topic
