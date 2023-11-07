@@ -6,7 +6,6 @@ from starlette.templating import Jinja2Templates
 
 from app.business.users.services.user import UserService
 from app.business.users.models.user import CreateUserRequest
-from app.domain.users.models.user_old import UserLogin
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(prefix="/users")

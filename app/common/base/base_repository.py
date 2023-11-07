@@ -46,3 +46,7 @@ class BaseSQLRepository(Generic[ModelType]):
         if not result:
             return None
         return result
+    
+    async def delete(self, *, model: ModelType):
+        await self.session.delete(model)
+        await self.session.commit()
