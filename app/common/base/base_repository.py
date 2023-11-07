@@ -39,3 +39,7 @@ class BaseSQLRepository(Generic[ModelType]):
         await self.session.commit()
         if refresh:
             await self.session.refresh(model)
+
+    async def delete(self, *, model: ModelType):
+        await self.session.delete(model)
+        await self.session.commit()
