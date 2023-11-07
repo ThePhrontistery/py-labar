@@ -1,4 +1,5 @@
 from fastapi import Depends
+from typing import Optional
 
 from app.common.base.base_repository import BaseSQLRepository
 from app.common.infra.sql_adaptors import get_async_session, AsyncSession
@@ -14,6 +15,10 @@ class UserSQLRepository(BaseSQLRepository[User]):
         new_user = User(username=create_req.username, email=create_req.email, password=create_req.password)
         await self.add(model=new_user)
         return new_user
+    
+    async def get_by_username(self, username: str) -> Optional[User]:
+         return await self.get_one_by("username", username)
+    
 
     # async def get_pending_todos(self) -> List[Todo]:
     #     todos = await self.session.exec(select(Todo).where(Todo.done == False))

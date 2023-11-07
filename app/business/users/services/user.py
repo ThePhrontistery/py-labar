@@ -1,3 +1,4 @@
+from typing import Optional
 from app.business.users.models.user import CreateUserRequest
 from app.domain.users.models.user import User
 from app.domain.users.repositories.user import UserSQLRepository
@@ -17,7 +18,11 @@ class UserService:
 
     async def create_user(self, create_req: CreateUserRequest) -> User:
         raw_new_user = await self.user_repository.create(create_req = create_req)
-        #raw_new_user = await self.user_repository.create(CreateUserRequest)
-        # TODO ASR hacer mapeo de User (Database) a User (Dto)
-        # todo_dto = parse_to_dto(raw_new_todo)
         return raw_new_user
+    
+    async def authenticate_user(self, username: str, password: str) -> Optional[User]:
+        user = await self.user_repository.get_by_username(username)
+        
+        if user and user.password == password:
+            return user
+        return None
