@@ -42,3 +42,7 @@ async def register(username: str = Form(...), email: str = Form(...), password: 
     create_user_request = CreateUserRequest(username=username, email=email, password=password)
     await user_service.create_user(create_user_request)
     return RedirectResponse(url="/", status_code=302)
+
+@router.get("/", name="logout_user")
+async def logout_user(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
