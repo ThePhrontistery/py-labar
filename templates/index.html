@@ -60,4 +60,26 @@
   </div>
 </div>
 
+<script>
+  // Función para mostrar el mensaje emergente
+  function showErrorPopup(message) {
+    var errorPopup = document.getElementById("error-popup");
+    var errorMessage = document.getElementById("error-message");
+    errorMessage.innerText = message;
+    errorPopup.style.display = "block"; // Mostrar el mensaje emergente
+    // Ocultar el mensaje emergente después de 5 segundos
+    setTimeout(function() {
+      errorPopup.style.display = "none";
+    }, 5000);
+  }
+</script>
+
+{% if error %}
+<script>
+  // Mostrar el mensaje de error si se proporciona un error en la plantilla
+  showErrorPopup("{{ error }}");
+</script>
+{% endif %}
+</script>
+
 {% endblock %}
