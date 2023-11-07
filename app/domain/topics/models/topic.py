@@ -1,6 +1,6 @@
-from sqlmodel import Field, Relationship
+from sqlmodel import Field
+
 from app.common.base.base_entity import BaseUUIDModel
-from app.domain.users.models import User
 
 
 # DB ENTITY
@@ -9,9 +9,8 @@ class Topic(BaseUUIDModel, table=True):
     type: str = Field(nullable=False)
     question: str = Field(nullable=False)
     author: str = Field(nullable=False)
-    groupId: str = Field(nullable=True)
-    status: str = Field(nullable=False)
+    group_id: str = Field(nullable=True)
     visits: int = Field(default=0)  # Valor predeterminado de visitas
-    closeDate: str = Field(nullable=True)
+    close_date: str = Field(nullable=True)
     # Campo de relación que representa la lista de usuarios asignados al tema
     # assigned_users: list[User] = Relationship(back_populates="assigned_topics")
