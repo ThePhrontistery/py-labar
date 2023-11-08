@@ -1,24 +1,85 @@
-{% extends 'login_base.html' %}
-
-{% block content %}
+{% extends 'login_base.html' %} {% block content %}
 
 <div class="flex flex-col items-center justify-center h-screen">
   <div class="bg-white p-10 rounded-lg shadow-lg">
-    <img class="w-10 h-10 mx-auto" src="{{ url_for('static', path='/logopylabar.png') }}" alt="PyLabar Logo">
+    <img
+      class="w-10 h-10 mx-auto"
+      src="{{ url_for('static', path='/logopylabar.png') }}"
+      alt="PyLabar Logo"
+    />
     <h2 class="text-xl font-bold my-3 text-center">Pylabar - Log in</h2>
-    
+
     {% if error %}
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-5" role="alert">
-        <strong class="font-bold">{{ error }}</strong>
+    <div
+      class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-5"
+      role="alert"
+    >
+      <strong class="font-bold">{{ error }}</strong>
     </div>
     {% endif %}
 
+    <form action="{{ url_for('login') }}" method="POST">
+      <div class="mb-5">
+        <label class="block font-bold mb-2" for="user_code">User</label>
+        <input
+          class="w-full px-3 py-2 border border-gray-300 rounded"
+          type="text"
+          name="username"
+          id="user_code"
+          required
+        />
+      </div>
+      <div class="mb-5">
+        <label class="block font-bold mb-2" for="password">Password</label>
+        <input
+          class="w-full px-3 py-2 border border-gray-300 rounded"
+          type="password"
+          name="password"
+          id="password"
+          required
+        />
+      </div>
+      <div class="mb-3 text-center">
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+          type="submit"
+        >
+          Log in
+        </button>
+      </div>
+    </form>
+
     <div class="text-center mt-4">
       <!-- Register User Button -->
-      <a href="{{ url_for('register_user') }}" class="text-sm text-blue-600 hover:underline">Register User</a>
-  </div>
-
+      <a
+        href="{{ url_for('register_user') }}"
+        class="text-sm text-blue-600 hover:underline"
+        >Register User</a
+      >
+    </div>
   </div>
 </div>
+
+<script>
+  // Función para mostrar el mensaje emergente
+  function showErrorPopup(message) {
+    var errorPopup = document.getElementById("error-popup");
+    var errorMessage = document.getElementById("error-message");
+    errorMessage.innerText = message;
+    errorPopup.style.display = "block"; // Mostrar el mensaje emergente
+    // Ocultar el mensaje emergente después de 5 segundos
+    setTimeout(function() {
+      errorPopup.style.display = "none";
+    }, 5000);
+  }
+</script>
+
+{% if error %}
+<script>
+  // Mostrar el mensaje de error si se proporciona un error en la plantilla
+  showErrorPopup("{{ error }}");
+</script>
+{% endif %}
+</script>
 
 {% endblock %}

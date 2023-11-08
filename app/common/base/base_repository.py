@@ -40,6 +40,13 @@ class BaseSQLRepository(Generic[ModelType]):
         if refresh:
             await self.session.refresh(model)
 
+    async def get_one_by(self, field_name: str, value) -> Optional[ModelType]:
+        result = await self.session.exec(select(self.model).where(getattr(self.model, field_name) == value))
+        result = result.first()
+        if not result:
+            return None
+        return result
+    
     async def delete(self, *, model: ModelType):
         await self.session.delete(model)
         await self.session.commit()
