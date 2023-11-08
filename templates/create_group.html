@@ -1,0 +1,21 @@
+{% extends 'login_base.html' %}
+
+{% block content %}
+<div class="bordered">
+    <h1 class="text-2xl">Crear Grupo</h1>
+    <form method="post" action="create">
+        <fieldset>
+            <legend>Detalles del Grupo</legend>
+            <div class="my-4">
+                <label for="name">Nombre del Grupo:</label>
+                <input type="text" name="name" id="name" required class="w-full p-2 border rounded">
+            </div>
+            <div class="my-4">
+                <label for="users">Usuarios (separados por comas):</label>
+                <input type="text" name="users" id="users" class="w-full p-2 border rounded">
+            </div>
+        </fieldset>
+        <button type="submit" class="btn btn-primary mt-4">Crear Grupo</button>
+    </form>
+</div>
+{% endblock %}
