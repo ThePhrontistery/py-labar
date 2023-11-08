@@ -1,6 +1,6 @@
 import logging
 
-from fastapi import APIRouter, HTTPException, Request, Form, status, Depends
+from fastapi import APIRouter, Request, Form, Depends
 from fastapi.responses import HTMLResponse
 from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
@@ -27,11 +27,7 @@ async def login(request: Request, username: str = Form(...), password: str = For
         return templates.TemplateResponse("index.html", {"request": request, "error": error_message})
     
     # Si el usuario se autentica correctamente, puedes redirigirlo
-    return RedirectResponse(url="/users/home", status_code=302)
-
-@router.get("/home")
-async def initial_home(request: Request):
-    return templates.TemplateResponse("home.html", {"request": request})
+    return templates.TemplateResponse("home.html", {"request": request, "username": username})
 
 @router.get("/register", name="register_user")
 async def register_user(request: Request):

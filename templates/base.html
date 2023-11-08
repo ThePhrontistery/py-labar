@@ -82,8 +82,9 @@
         <h1 class="text-xl font-bold pylabartitle">♠ PyLabar ♠</h1>
         <nav class="flex items-center gap-4">
           <div class="dropdown">
+            {% if username %}
             <button class="btn btn-sm btn-ghost dropdown-btn">
-              Username &#9660;
+              {{ username }} &#9660;
             </button>
             <i class="fas fa-caret-down"></i>
             <div class="dropdown-content bordered-dropdown">
@@ -93,6 +94,7 @@
                 >Logout</a
               >
             </div>
+            {% endif %}
           </div>
         </nav>
       </div>
