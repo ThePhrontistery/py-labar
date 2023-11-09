@@ -7,6 +7,11 @@
     <title>♠ PyLabar</title>
     <script src="https://unpkg.com/htmx.org@1.9.8"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.2/dist/full.css" rel="stylesheet" type="text/css"/>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet"/>
     <style>
@@ -90,16 +95,14 @@
 </header>
 
 <main class="container mx-auto px-4 py-8">
-    <nav class="flex items-center gap-4">
-        <a href="/newtopic" class="btn btn-sm btn-primary ml-auto">New Topic</a>
-    </nav>
-    <nav class="flex items-center gap-4">
-        <a href="/groups/create" class="btn btn-primary">New Group</a>
-    </nav>
+  <nav class="flex items-right gap-4">
+    <a href="/groups/create" class="btn btn-sm bg-blue-500 text-white border-0 ml-auto">New Group</a>
+    <a href="/newtopic" class="btn btn-sm bg-blue-500 text-white border-0">New Topic</a>
+  </nav>
 
-    <div class="mx-auto max-w-screen-md">
-        <div class="w-full mx-auto">{% block content %}{% endblock %}</div>
-    </div>
+  <div class="mx-auto max-w-screen-md">
+      <div class="w-full mx-auto">{% block content %}{% endblock %}</div>
+  </div>
 </main>
 
 <footer class="bg-blue-500 text-white py-4 mt-auto">

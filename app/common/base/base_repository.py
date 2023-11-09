@@ -1,4 +1,4 @@
-from typing import Generic, TypeVar, Type, Union, Optional
+from typing import Generic, List, TypeVar, Type, Union, Optional
 from uuid import UUID
 
 from fastapi import Depends
@@ -50,3 +50,7 @@ class BaseSQLRepository(Generic[ModelType]):
     async def delete(self, *, model: ModelType):
         await self.session.delete(model)
         await self.session.commit()
+    
+    async def get_all(self) -> List[ModelType]:
+        result = await self.session.exec(select(self.model))
+        return result.all()

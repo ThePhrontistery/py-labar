@@ -38,3 +38,6 @@ class TopicSQLRepository(BaseSQLRepository[Topic]):
         topic = await self.get(uid=topic_id)
         await self.delete(model=topic)
 
+    async def get_all_topics(self):
+        return await self.get_all()
+
