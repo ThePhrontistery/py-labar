@@ -3,6 +3,9 @@ from app.common.services.sse import EventPublisher
 from app.domain.topics.models import Topic
 from app.domain.topics.repositories.topic import TopicSQLRepository
 from fastapi import Depends
+from datetime import datetime
+
+date_format = "%Y-%m-%d %H:%M:%S"
 
 
 def parse_to_dto(topic_entity: Topic):
@@ -47,4 +50,12 @@ class TopicService:
         return parse_to_dto(raw_topic)
 
     async def get_all_topics(self):
+        all_topics = await self.topic_repo.get_all_topics()
+        for topic in all_topics:
+            if topic.close_date:
+                date_parts = topic.close_date.split(" ")[0].split("-")
+                topic.close_date = datetime(int(date_parts[0]), int(date_parts[1]), int(date_parts[2]))
+                topic.close_date = topic.close_date.strftime("%d-%m-%Y")
+            else:
+                topic.close_date = ""
         return await self.topic_repo.get_all_topics()
