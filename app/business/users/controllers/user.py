@@ -1,6 +1,6 @@
 import logging
 
-from fastapi import APIRouter, Request, Form, Depends
+from fastapi import APIRouter, FastAPI, Request, Form, Depends
 from fastapi.responses import HTMLResponse
 from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
@@ -14,19 +14,29 @@ router = APIRouter()
 
 logger = logging.getLogger(__name__)
 
+app = FastAPI()
+
+class UserManager:
+    def __init__(self):
+        self.username = None
+
+user_manager = UserManager()
+
+def get_user_manager():
+    return user_manager
 
 # @router.get("/")
 # async def home_page(request: Request):
 #     return templates.TemplateResponse('index.html', {"request": request})
 
 
-@router.post("/login", response_class=HTMLResponse)
+@router.post("/home", response_class=HTMLResponse, name="login")
 async def login(request: Request, username: str = Form(...), password: str = Form(...), user_service: UserService = Depends(UserService), topic_service: TopicService = Depends(TopicService)):
     if not await user_service.authenticate_user(username, password):
         error_message = "Usuario y/o contraseña incorrectos"
         return templates.TemplateResponse("index.html", {"request": request, "error": error_message})
     all_topics = await topic_service.get_all_topics()
-
+    user_manager.username = username
     return templates.TemplateResponse("home.html", {"request": request, "username": username, "table_topics": all_topics})
 
 @router.get("/register", name="register_user")
@@ -38,6 +48,11 @@ async def register(username: str = Form(...), email: str = Form(...), password: 
     create_user_request = CreateUserRequest(username=username, email=email, password=password)
     await user_service.create_user(create_user_request)
     return RedirectResponse(url="/", status_code=302)
+
+@router.get("/home", response_class=HTMLResponse, name="return_home")
+async def login(request: Request, topic_service: TopicService = Depends(TopicService)):
+    all_topics = await topic_service.get_all_topics()
+    return templates.TemplateResponse("home.html", {"request": request, "username": user_manager.username, "table_topics": all_topics})
 
 @router.get("/", name="logout_user")
 async def logout_user(request: Request):

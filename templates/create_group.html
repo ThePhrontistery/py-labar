@@ -1,21 +1,100 @@
-{% extends 'login_base.html' %}
-
+{% extends 'base.html' %}
 {% block content %}
-<div class="bordered">
-    <h1 class="text-2xl">Crear Grupo</h1>
-    <form method="post" action="create">
-        <fieldset>
-            <legend>Detalles del Grupo</legend>
-            <div class="my-4">
-                <label for="name">Nombre del Grupo:</label>
-                <input type="text" name="name" id="name" required class="w-full p-2 border rounded">
-            </div>
-            <div class="my-4">
-                <label for="users">Usuarios (separados por comas):</label>
-                <input type="text" name="users" id="users" class="w-full p-2 border rounded">
-            </div>
-        </fieldset>
-        <button type="submit" class="btn btn-primary mt-4">Crear Grupo</button>
+  <div class="container mx-auto mt-12 p-6">
+    <h1 class="text-4xl font-bold mb-6 text-blue-500">Crear Grupo</h1>
+    <form method="post" action="{{ url_for('create_group') }}">
+      <fieldset class="mb-6">
+        <div class="my-4">
+          <label for="name" class="block text-sm font-medium text-gray-600">Nombre del Grupo:</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            required
+            class="w-full p-3 border rounded focus:outline-none focus:border-blue-500"
+          />
+        </div>
+        <div class="my-4">
+          <label class="block text-sm font-medium text-gray-600">Seleccionar Usuarios:</label>
+          <div class="max-h-40 overflow-auto border p-3 rounded bg-white">
+            <ul class="list-none p-0 m-0">
+              {% for user in all_users %}
+                <li class="flex items-center space-x-2">
+                  <label class="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      name="selected_users"
+                      value="{{ user.username }}"
+                      class="form-checkbox"
+                      hx-post="/groups/update_users"
+                      hx-trigger="change"
+                    />
+                    <span class="text-gray-800">{{ user.username }}</span>
+                  </label>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="my-4">
+          <label for="users" class="block text-sm font-medium text-gray-600">Usuarios (separados por comas):</label>
+          <input
+            type="text"
+            name="users"
+            id="users"
+            class="w-full p-3 border rounded focus:outline-none focus:border-blue-500"
+            hx-post="/groups/update_users"
+            hx-trigger="change"
+            hx-target="#users-list"
+            readonly
+          />
+        </div>
+      </fieldset>
+      <nav class="flex items-center justify-center gap-4">
+        <a
+          href="{{ url_for('return_home') }}"
+          class="btn bg-blue-500 text-white border-0 py-3 px-6 rounded"
+        >Volver</a>
+        <button
+          type="submit"
+          class="btn bg-blue-500 text-white border-0 py-3 px-6 rounded"
+        >
+          Crear Grupo
+        </button>
+      </nav>
     </form>
-</div>
+  </div>
+
+  <style>
+
+    .form-checkbox:checked {
+      color: #fff;
+      background-color: #3b82f6;
+    }
+  </style>
+
+<script>
+    document.addEventListener('htmx:afterSwap', function (event) {
+      const xhr = event.detail.xhr;
+      const updateUsersUrl = "/groups/update_users"; 
+  
+      if (xhr && xhr.responseURL && xhr.responseURL.endsWith(updateUsersUrl)) {
+  
+        const selectedCheckboxes = document.querySelectorAll('input[name="selected_users"]');
+        const usersInput = document.getElementById('users');
+  
+        selectedCheckboxes.forEach((checkbox, index) => {
+          checkbox.setAttribute('data-index', index);
+        });
+  
+        const selectedUsers = Array.from(selectedCheckboxes)
+          .filter((checkbox) => checkbox.checked)
+          .sort((a, b) => a.getAttribute('data-index') - b.getAttribute('data-index'))
+          .map((checkbox) => checkbox.value)
+          .join(', ');
+  
+        usersInput.value = selectedUsers;
+      }
+    });
+  </script>
 {% endblock %}
