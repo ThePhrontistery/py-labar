@@ -1,4 +1,4 @@
-{% extends 'login_base.html' %} {% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <div class="flex flex-col items-center justify-center h-screen">
   <div class="bg-white p-10 rounded-lg shadow-lg">
@@ -46,17 +46,15 @@
         >
           Log in
         </button>
+        <div class="mb-5"></div>
+        <div>
+          <a
+          href="{{ url_for('register_user') }}"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+          >Register User</a>
+        </div>
       </div>
     </form>
-
-    <div class="text-center mt-4">
-      <!-- Register User Button -->
-      <a
-        href="{{ url_for('register_user') }}"
-        class="text-sm text-blue-600 hover:underline"
-        >Register User</a
-      >
-    </div>
   </div>
 </div>
 

@@ -13,13 +13,9 @@ class GroupService:
     def __init__(self, repository: GroupSQLRepository = Depends(GroupSQLRepository)):
         self.group_repo = repository
 
-    async def create_group(self, name: str, users: list[str]) -> GroupDto:
-        raw_new_group = await self.group_repo.create(
-            name=name,
-            users=users
-        )
-        group_dto = parse_to_dto(raw_new_group)
-        return group_dto
+    async def create_group(self,  create_req: GroupDto) -> Group:
+        raw_new_group = await self.group_repo.create(create_req = create_req)
+        return raw_new_group
 
     async def delete_group(self, group_id: str):
         raw_group = await self.group_repo.get(uid=group_id)
