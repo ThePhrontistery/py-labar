@@ -13,3 +13,14 @@ class TopicDto(BaseModel):
 
     class Config:
         orm_mode = True
+
+class CreateTopicDto(BaseModel):
+    title: str
+    type: str
+    question: str
+    author: str
+    group_id: str
+    close_date: str
+
+    class Config:
+        orm_mode = True

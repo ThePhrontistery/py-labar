@@ -31,3 +31,6 @@ class GroupService:
     async def get_group(self, group_id: str) -> GroupDto:
         raw_group = await self.group_repo.get(uid=group_id)
         return parse_to_dto(raw_group)
+    
+    async def get_all_groups(self):
+       return await self.group_repo.get_all_groups()

@@ -26,3 +26,7 @@ class GroupSQLRepository(BaseSQLRepository[Group]):
     async def remove(self, group_id: UUID):
         group = await self.get(uid=group_id)
         await self.delete(model=group)
+
+    async def get_all_groups(self):
+        return await self.get_all()
+

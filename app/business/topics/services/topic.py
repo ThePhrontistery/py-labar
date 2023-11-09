@@ -1,4 +1,4 @@
-from app.business.topics.models.topic import TopicDto
+from app.business.topics.models.topic import TopicDto, CreateTopicDto
 from app.domain.topics.models import Topic
 from app.domain.topics.repositories.topic import TopicSQLRepository
 from fastapi import Depends
@@ -16,16 +16,9 @@ class TopicService:
     def __init__(self, repository: TopicSQLRepository = Depends(TopicSQLRepository)):
         self.topic_repo = repository
 
-    async def create_topic(self, title: str, type: str, question: str, author: str, group_id: str) -> TopicDto:
-        raw_new_topic = await self.topic_repo.create(
-            title=title,
-            type=type,
-            question=question,
-            author=author,
-            group_id=group_id
-        )
-        topic_dto = parse_to_dto(raw_new_topic)
-        return topic_dto
+    async def create_topic(self,  create_req: CreateTopicDto) -> Topic:
+        raw_new_topic = await self.topic_repo.create(create_req = create_req)
+        return raw_new_topic
 
     async def delete_topic(self, topic_id: str):
         raw_topic = await self.topic_repo.get(uid=topic_id)

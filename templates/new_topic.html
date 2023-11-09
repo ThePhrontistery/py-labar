@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mx-auto px-4">
-  <form action="/api/topics/create" hx-post="/api/topics/create" hx-target="#response" hx-swap="outerHTML">
+<div class="container mx-auto mt-12 p-6">
+  <form method="post" action="{{ url_for('create_topic') }}">
     <div class="flex flex-col items-center justify-center">
       <div class="mb-4">
         <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Choose a title:</label>
@@ -14,14 +14,14 @@
       </div>
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">Tu equipo seleccionará un emOJI</label>
-        <div class="flex items-center">
-          <input type="radio" id="emoji1" name="emoji" value="happy" class="mx-2">
-          <label for="emoji1">😊</label>
-          <input type="radio" id="emoji2" name="emoji" value="satisfied" class="mx-2">
-          <label for="emoji2">😐</label>
-          <input type="radio" id="emoji3" name="emoji" value="unsatisfied" class="mx-2">
-          <label for="emoji3">😞</label>
-        </div>
+      </div>
+      <div class="mb-4">
+        <label for="group" class="block text-gray-700 text-sm font-bold mb-2">Groups:</label>
+        <select id="group" name="group" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+          {% for group in all_groups %}
+            <option name="group_id" value="{{ group.id }}">{{ group.name }}</option>
+          {% endfor %}
+        </select>
       </div>
       <div id="response"></div>
       <div class="flex items-center justify-between">
@@ -29,6 +29,7 @@
         <a href="{{ url_for('new_topic') }}" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">Cancel</a>
       </div>
     </div>
+
   </form>
 </div>
 {% endblock %}

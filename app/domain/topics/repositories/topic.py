@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from fastapi import Depends
+from app.business.topics.models.topic import CreateTopicDto
 
 from app.common.base.base_repository import BaseSQLRepository
 from app.common.infra.sql_adaptors import get_async_session, AsyncSession
@@ -12,14 +13,8 @@ class TopicSQLRepository(BaseSQLRepository[Topic]):
     def __init__(self, session: AsyncSession = Depends(get_async_session)):
         super().__init__(Topic, session)
 
-    async def create(self, title: str, type: str, question: str, author: str, group_id: str) -> Topic:
-        new_topic = Topic(
-            title=title,
-            type=type,
-            question=question,
-            author=author,
-            group_id=group_id
-        )
+    async def create(self, create_req: CreateTopicDto) -> Topic:
+        new_topic = Topic(title=create_req.title, type=create_req.type, question=create_req.question, author=create_req.author, group_id=create_req.group_id, close_date=create_req.close_date)
         await self.add(model=new_topic)
         return new_topic
 
