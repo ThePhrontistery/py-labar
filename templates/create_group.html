@@ -73,7 +73,28 @@
     }
   </style>
 
-  <script>
-    // Tu script JavaScript aquí
+<script>
+    document.addEventListener('htmx:afterSwap', function (event) {
+      const xhr = event.detail.xhr;
+      const updateUsersUrl = "/groups/update_users"; 
+  
+      if (xhr && xhr.responseURL && xhr.responseURL.endsWith(updateUsersUrl)) {
+  
+        const selectedCheckboxes = document.querySelectorAll('input[name="selected_users"]');
+        const usersInput = document.getElementById('users');
+  
+        selectedCheckboxes.forEach((checkbox, index) => {
+          checkbox.setAttribute('data-index', index);
+        });
+  
+        const selectedUsers = Array.from(selectedCheckboxes)
+          .filter((checkbox) => checkbox.checked)
+          .sort((a, b) => a.getAttribute('data-index') - b.getAttribute('data-index'))
+          .map((checkbox) => checkbox.value)
+          .join(', ');
+  
+        usersInput.value = selectedUsers;
+      }
+    });
   </script>
 {% endblock %}
