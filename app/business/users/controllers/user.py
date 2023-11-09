@@ -10,14 +10,14 @@ from app.business.users.models.user import CreateUserRequest
 from app.business.topics.services.topic import TopicService
 
 templates = Jinja2Templates(directory="templates")
-router = APIRouter(prefix="/users")
+router = APIRouter()
 
 logger = logging.getLogger(__name__)
 
 
-@router.get("/")
-async def home_page(request: Request):
-    return templates.TemplateResponse('index.html', {"request": request})
+# @router.get("/")
+# async def home_page(request: Request):
+#     return templates.TemplateResponse('index.html', {"request": request})
 
 
 @router.post("/login", response_class=HTMLResponse)

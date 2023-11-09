@@ -1,5 +1,4 @@
 from app.business.topics.models.topic import TopicDto
-from app.common.services.sse import EventPublisher
 from app.domain.topics.models import Topic
 from app.domain.topics.repositories.topic import TopicSQLRepository
 from fastapi import Depends
@@ -13,7 +12,6 @@ def parse_to_dto(topic_entity: Topic):
 
 
 class TopicService:
-    _topic_event_publisher = EventPublisher()
 
     def __init__(self, repository: TopicSQLRepository = Depends(TopicSQLRepository)):
         self.topic_repo = repository
