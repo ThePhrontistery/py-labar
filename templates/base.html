@@ -68,6 +68,33 @@
         .blue-text {
           color: rgb(59 130 246 / var(--tw-bg-opacity));
         }
+
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; 
+        }
+
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000; /* Asegura que el header esté encima de otros elementos */
+        }
+
+        footer {
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            z-index: 1000;
+        }
+
+        .padding-top {
+          padding-top: 80px;
+        }
     </style>
 </head>
 
@@ -94,12 +121,13 @@
     </div>
 </header>
 
-<main class="container mx-auto px-4 py-8">
-  <nav class="flex items-right gap-4">
-    <a href="/groups/create" class="btn btn-sm bg-blue-500 text-white border-0 ml-auto">New Group</a>
-    <a href="/newtopic" class="btn btn-sm bg-blue-500 text-white border-0">New Topic</a>
-  </nav>
-
+<main class="container mx-auto px-4">
+  {% if table_topics %}
+    <nav class="flex items-right gap-4 padding-top">
+      <a href="/groups/create" class="btn btn-sm bg-blue-500 text-white border-0 ml-auto">New Group</a>
+      <a href="/newtopic" class="btn btn-sm bg-blue-500 text-white border-0">New Topic</a>
+    </nav>
+  {% endif %}
   <div class="mx-auto max-w-screen-md">
       <div class="w-full mx-auto">{% block content %}{% endblock %}</div>
   </div>

@@ -11,7 +11,8 @@ logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     # import entities to init
-    from app.domain.users.models import *  # Type: ignore
-    from app.domain.topics.models import *  # Type: ignore
+    from app.domain.users.models import user
+    from app.domain.topics.models import topic 
+    from app.domain.groups.models import group 
     init_db_entities(get_db_settings())
     uvicorn.run("app.api:api", host="localhost", port=get_global_settings().port, log_config=get_log_config(), reload=True)

@@ -1,8 +1,8 @@
-{% extends 'login_base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 <div class="flex justify-center items-center h-screen">
-  <form class="bg-white p-10 rounded-lg shadow-lg" action="{{ url_for('register_user') }}" method="POST">
+  <form class="bg-white p-10 rounded-lg shadow-lg" action="{{ url_for('register') }}" method="POST">
     <h2 class="text-xl font-bold mb-3">Register</h2>
     <div class="mb-5">
       <label for="username" class="block font-bold mb-2">Username</label>

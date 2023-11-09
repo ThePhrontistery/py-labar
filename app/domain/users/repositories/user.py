@@ -19,6 +19,9 @@ class UserSQLRepository(BaseSQLRepository[User]):
     async def get_by_username(self, username: str) -> Optional[User]:
          return await self.get_one_by("username", username)
     
+    async def get_all_users(self):
+        return await self.get_all()
+    
 
     # async def get_pending_todos(self) -> List[Todo]:
     #     todos = await self.session.exec(select(Todo).where(Todo.done == False))
