@@ -15,24 +15,22 @@ router = APIRouter()
 
 logger = logging.getLogger(__name__)
 
-app = FastAPI()
 
 class UserManager:
     def __init__(self):
         self.username = None
 
+
 user_manager = UserManager()
+
 
 def get_user_manager():
     return user_manager
 
-# @router.get("/")
-# async def home_page(request: Request):
-#     return templates.TemplateResponse('index.html', {"request": request})
-
 
 @router.post("/home", response_class=HTMLResponse, name="login")
-async def login(request: Request, username: str = Form(...), password: str = Form(...), user_service: UserService = Depends(UserService), topic_service: TopicService = Depends(TopicService)):
+async def login(request: Request, username: str = Form(...), password: str = Form(...),
+                user_service: UserService = Depends(UserService), topic_service: TopicService = Depends(TopicService)):
     if not await user_service.authenticate_user(username, password):
         error_message = "Usuario y/o contraseña incorrectos"
         return templates.TemplateResponse("index.html", {"request": request, "error": error_message})
@@ -40,22 +38,27 @@ async def login(request: Request, username: str = Form(...), password: str = For
     user_manager.username = username
     actual_date = datetime.now().date()
     isHomePage = True
-    return templates.TemplateResponse("home.html", {"request": request, "username": username, "table_topics": all_topics, "actual_date": actual_date, "isHomePage":isHomePage})
+    return templates.TemplateResponse("home.html",
+                                      {"request": request, "username": username, "table_topics": all_topics,
+                                       "actual_date": actual_date, "isHomePage": isHomePage})
+
 
 @router.get("/register", name="register_user")
 async def register_user(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
+
 @router.post("/register")
-async def register(request: Request, username: str = Form(...), email: str = Form(...), password: str = Form(...), user_service: UserService = Depends(UserService)):
+async def register(request: Request, username: str = Form(...), email: str = Form(...), password: str = Form(...),
+                   user_service: UserService = Depends(UserService)):
     exists_user = await user_service.exists_user(username)
     if not exists_user:
         create_user_request = CreateUserRequest(username=username, email=email, password=password)
         await user_service.create_user(create_user_request)
         return RedirectResponse(url="/", status_code=302)
     else:
-        error_message = "El nombre de usuario ya existe"
-        return templates.TemplateResponse("index.html", {"request": request, "error": error_message})
+        request.error = "El nombre de usuario ya existe"
+        return templates.TemplateResponse("register.html", {"request": request})
 
 
 @router.get("/home", response_class=HTMLResponse, name="return_home")
@@ -63,7 +66,10 @@ async def login(request: Request, topic_service: TopicService = Depends(TopicSer
     all_topics = await topic_service.get_all_topics()
     isHomePage = True
     actual_date = datetime.now().date()
-    return templates.TemplateResponse("home.html", {"request": request, "username": user_manager.username, "table_topics": all_topics, "actual_date": actual_date, "isHomePage":isHomePage})
+    return templates.TemplateResponse("home.html", {"request": request, "username": user_manager.username,
+                                                    "table_topics": all_topics, "actual_date": actual_date,
+                                                    "isHomePage": isHomePage})
+
 
 @router.get("/", name="logout_user")
 async def logout_user(request: Request):
