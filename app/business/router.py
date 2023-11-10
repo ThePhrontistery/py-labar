@@ -14,11 +14,7 @@ all_router.include_router(group_management_router, tags=["Group Management"])
 templates = Jinja2Templates(directory="templates")
 
 
-# @all_router.get("/")
-# async def home_page_redirect(request: Request):
-#     return RedirectResponse("/users")
-
-@all_router.get("/")
+@all_router.get("/", name="index")
 async def index_page(request: Request):
     return templates.TemplateResponse('index.html', {"request": request})
 
