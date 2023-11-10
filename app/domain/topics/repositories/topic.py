@@ -14,7 +14,12 @@ class TopicSQLRepository(BaseSQLRepository[Topic]):
         super().__init__(Topic, session)
 
     async def create(self, create_req: CreateTopicDto) -> Topic:
-        new_topic = Topic(title=create_req.title, type=create_req.type, question=create_req.question, author=create_req.author, group_id=create_req.group_id, close_date=create_req.close_date)
+        new_topic = Topic(title=create_req.title,
+                          type=create_req.type,
+                          question=create_req.question,
+                          author=create_req.author,
+                          group_id=create_req.group_id,
+                          close_date=create_req.close_date)
         await self.add(model=new_topic)
         return new_topic
 

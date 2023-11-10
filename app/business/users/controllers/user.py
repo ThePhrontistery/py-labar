@@ -47,10 +47,16 @@ async def register_user(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
 @router.post("/register")
-async def register(username: str = Form(...), email: str = Form(...), password: str = Form(...), user_service: UserService = Depends(UserService)):
-    create_user_request = CreateUserRequest(username=username, email=email, password=password)
-    await user_service.create_user(create_user_request)
-    return RedirectResponse(url="/", status_code=302)
+async def register(request: Request, username: str = Form(...), email: str = Form(...), password: str = Form(...), user_service: UserService = Depends(UserService)):
+    exists_user = await user_service.exists_user(username)
+    if not exists_user:
+        create_user_request = CreateUserRequest(username=username, email=email, password=password)
+        await user_service.create_user(create_user_request)
+        return RedirectResponse(url="/", status_code=302)
+    else:
+        error_message = "El nombre de usuario ya existe"
+        return templates.TemplateResponse("index.html", {"request": request, "error": error_message})
+
 
 @router.get("/home", response_class=HTMLResponse, name="return_home")
 async def login(request: Request, topic_service: TopicService = Depends(TopicService)):
