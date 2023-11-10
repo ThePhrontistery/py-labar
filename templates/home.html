@@ -36,11 +36,11 @@
 
         <a href="#" 
           class="btn btn-xs btn-ghost text-blue-500" 
-          hx-get="/confirm_delete_modal?topic_id={{ topic.id }}&topic_title={{ topic.title }}"
+          hx-get="/topics/confirm_delete_modal?topic_id={{ topic.id }}"
           hx-target="#modal-container"
           hx-swap="innerHTML">
           <i class="fas fa-trash-alt fa-lg" title="Borrar"></i>
-       </a>  
+       </a>
 
           <a href="#" class="btn btn-xs btn-ghost text-grey-500 disabled" onclick="return false;">
             <i class="fas fa-thumbs-up fa-lg" title="Votar"></i>
