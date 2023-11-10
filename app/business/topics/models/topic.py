@@ -1,3 +1,4 @@
+from datetime import date
 from pydantic import BaseModel
 
 
@@ -9,7 +10,7 @@ class TopicDto(BaseModel):
     author: str
     group_id: str
     visits: int
-    close_date: str
+    close_date: date
 
     class Config:
         orm_mode = True

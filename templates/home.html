@@ -1,6 +1,4 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <table class="table-auto w-full mt-4 border-collapse">
   <!-- head -->
@@ -15,21 +13,36 @@
   </thead>
   <tbody>
     {% for topic in table_topics %}
-      <tr class="tr_index border-b border-gray-300">
-        <td class="px-4 py-2 text-left">
-          {{ topic.title }}
-        </td>
-        <td class="px-4 py-2 text-center">
-          {% if topic.close_date %}
-            <span>Cerrado</span>
-          {% else %}
-            <span>Abierto</span>
-          {% endif %}
-        </td>
-        <td class="px-4 py-2 text-center">{{ topic.author }}</td>
-        <td class="px-4 py-2 text-center">{{ topic.close_date }}</td>
-        <td class="px-4 py-2 text-center">
+    <tr class="tr_index border-b border-gray-300">
+      <td class="px-4 py-2 text-left">{{ topic.title }}</td>
+      <td class="px-4 py-2 text-center">
+        {% if topic.close_date <= actual_date %}
+          <span>Cerrado</span>
+        {% else %} 
+          <span>Abierto</span>
+        {% endif %}
+      </td>
+      <td class="px-4 py-2 text-center">{{ topic.author }}</td>
+      <td class="px-4 py-2 text-center fecha-celda">{{ topic.close_date }}</td>
+      <td class="px-4 py-2 text-center">
+        {% if topic.close_date <= actual_date %}
           <a href="#" class="btn btn-xs btn-ghost text-blue-500">
+            <i class="fas fa-lock fa-lg" title="Abrir"></i>
+          </a>
+          <a href="#" class="btn btn-xs btn-ghost text-grey-500 disabled" onclick="return false;">
+            <i class="fas fa-lock fa-lg" title="Cerrar"></i>
+          </a>
+          <a href="#" class="btn btn-xs btn-ghost text-blue-500">
+            <i class="fas fa-trash-alt fa-lg" title="Borrar"></i>
+          </a>
+          <a href="#" class="btn btn-xs btn-ghost text-grey-500 disabled" onclick="return false;">
+            <i class="fas fa-thumbs-up fa-lg" title="Votar"></i>
+            <a href="#" class="btn btn-xs btn-ghost text-blue-500">
+              <i class="fas fa-chart-bar fa-lg" title="Resultados"></i>
+            </a>
+          </a>
+        {% else %} 
+          <a href="#" class="btn btn-xs btn-ghost text-grey-500 disabled" onclick="return false;">
             <i class="fas fa-lock-open fa-lg" title="Abrir"></i>
           </a>
           <a href="#" class="btn btn-xs btn-ghost text-blue-500">
@@ -41,11 +54,12 @@
           <a href="#" class="btn btn-xs btn-ghost text-blue-500">
             <i class="fas fa-thumbs-up fa-lg" title="Votar"></i>
           </a>
-          <a href="#" class="btn btn-xs btn-ghost text-blue-500">
+          <a href="#" class="btn btn-xs btn-ghost text-grey-500 disabled" onclick="return false;">
             <i class="fas fa-chart-bar fa-lg" title="Resultados"></i>
           </a>
-        </td>
-      </tr>
+        {% endif %}
+      </td>
+    </tr>
     {% endfor %}
   </tbody>
 </table>
@@ -69,7 +83,35 @@
     position: absolute;
     transform: translate(0, -110%);
   }
+
+  .btn.disabled {
+  pointer-events: none;
+}
+
+.btn.disabled:hover {
+  /* No se realizará ninguna acción al pasar el ratón por encima */
+}
 </style>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    var celdasFecha = document.querySelectorAll('.fecha-celda');
+
+    celdasFecha.forEach(function(celda) {
+
+      var fechaISO = celda.textContent;
+      
+      var fecha = new Date(fechaISO);
+      
+      var dia = fecha.getDate();
+      var mes = fecha.getMonth() + 1; 
+      var año = fecha.getFullYear();
+      
+      var fechaFormateada = ("0" + dia).slice(-2) + "-" + ("0" + mes).slice(-2) + "-" + año;
+
+      celda.textContent = fechaFormateada;
+     });
+    });
+  </script>
 
 {% endblock %}

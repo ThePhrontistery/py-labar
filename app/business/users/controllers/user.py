@@ -8,6 +8,7 @@ from starlette.templating import Jinja2Templates
 from app.business.users.services.user import UserService
 from app.business.users.models.user import CreateUserRequest
 from app.business.topics.services.topic import TopicService
+from datetime import datetime
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()
@@ -37,7 +38,9 @@ async def login(request: Request, username: str = Form(...), password: str = For
         return templates.TemplateResponse("index.html", {"request": request, "error": error_message})
     all_topics = await topic_service.get_all_topics()
     user_manager.username = username
-    return templates.TemplateResponse("home.html", {"request": request, "username": username, "table_topics": all_topics})
+    actual_date = datetime.now().date()
+    isHomePage = True
+    return templates.TemplateResponse("home.html", {"request": request, "username": username, "table_topics": all_topics, "actual_date": actual_date, "isHomePage":isHomePage})
 
 @router.get("/register", name="register_user")
 async def register_user(request: Request):
@@ -52,7 +55,9 @@ async def register(username: str = Form(...), email: str = Form(...), password: 
 @router.get("/home", response_class=HTMLResponse, name="return_home")
 async def login(request: Request, topic_service: TopicService = Depends(TopicService)):
     all_topics = await topic_service.get_all_topics()
-    return templates.TemplateResponse("home.html", {"request": request, "username": user_manager.username, "table_topics": all_topics})
+    isHomePage = True
+    actual_date = datetime.now().date()
+    return templates.TemplateResponse("home.html", {"request": request, "username": user_manager.username, "table_topics": all_topics, "actual_date": actual_date, "isHomePage":isHomePage})
 
 @router.get("/", name="logout_user")
 async def logout_user(request: Request):
