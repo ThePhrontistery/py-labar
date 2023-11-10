@@ -1,3 +1,4 @@
+#File: app/business/topics/controllers/topic.py
 import logging
 
 from fastapi import APIRouter, Request, Depends, Form
@@ -37,4 +38,24 @@ async def create_topic(
     
     home_url = user_router.url_path_for("return_home")
 
+    return RedirectResponse(url=home_url, status_code=302)
+
+@router.delete("/delete_topic/{topic_id}", name="delete_topic")
+async def delete_topic(request: Request,
+                        topic_id: str,
+                          topic_service: TopicService = Depends(TopicService)
+                          ):
+    """
+    Deletes a topic.
+
+    Args:
+        request (Request): The request object.
+        topic_id (str): The ID of the topic to be deleted.
+        topic_service (TopicService): Dependency injection of the TopicService.
+
+    Returns:
+        RedirectResponse: Redirects to the home page after deletion.
+    """
+    await topic_service.delete_topic(topic_id)
+    home_url = user_router.url_path_for("return_home")
     return RedirectResponse(url=home_url, status_code=302)
