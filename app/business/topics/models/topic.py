@@ -15,6 +15,7 @@ class TopicDto(BaseModel):
     class Config:
         orm_mode = True
 
+
 class CreateTopicDto(BaseModel):
     title: str
     type: str
