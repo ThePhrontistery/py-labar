@@ -1,4 +1,3 @@
-<!-- File: templates/base.html -->
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -8,10 +7,7 @@
     <title>♠ PyLabar</title>
     <script src="https://unpkg.com/htmx.org@1.9.8"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.2/dist/full.css" rel="stylesheet" type="text/css"/>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet"/>
@@ -24,7 +20,7 @@
         .dropdown-content {
           display: none;
           position: absolute;
-          background-color: #fff; /* Color de fondo del desplegable */
+          background-color: #fff;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
           z-index: 1;
         }
@@ -34,15 +30,15 @@
         }
 
         .dropdown-btn {
-          color: #fff; /* Texto en blanco */
-          border-radius: 5px; /* Bordes redondeados */
-          padding: 10px 15px; /* Espaciado interno */
+          color: #fff;
+          border-radius: 5px;
+          padding: 10px 15px;
           cursor: pointer;
           transition: background-color 0.3s, color 0.3s;
         }
 
         .dropdown-btn:hover {
-          background-color: #0056b3; /* Fondo más oscuro al pasar el mouse */
+          background-color: #0056b3;
         }
 
         .center-btn {
@@ -76,14 +72,14 @@
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            min-height: 100vh; 
+            min-height: 100vh;
         }
 
         header {
             position: fixed;
             width: 100%;
             top: 0;
-            z-index: 1000; /* Asegura que el header esté encima de otros elementos */
+            z-index: 1000;
         }
 
         footer {
@@ -96,6 +92,10 @@
         .padding-top {
           padding-top: 80px;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
@@ -106,15 +106,11 @@
         <nav class="flex items-center gap-4">
             <div class="dropdown">
                 {% if username %}
-                <button class="btn btn-sm btn-ghost dropdown-btn">
+                <button class="btn btn-sm btn-ghost dropdown-btn" hx-target="#user-menu">
                     {{ username }} &#9660;
                 </button>
-                <div class="dropdown-content bordered-dropdown">
-                    <a
-                            href="{{ url_for('logout_user') }}"
-                            class="btn btn-sm btn-ghost center-btn blue-text"
-                    >Logout</a
-                    >
+                <div id="user-menu" class="dropdown-content bordered-dropdown" hx-vals="_=_">
+                    <a href="{{ url_for('logout_user') }}" class="btn btn-sm btn-ghost center-btn blue-text">Logout</a>
                 </div>
                 {% endif %}
             </div>
@@ -124,20 +120,21 @@
 <main class="container mx-auto px-4">
   {% if isHomePage %}
     <nav class="flex items-right gap-4 padding-top">
-      <a href="/groups/create" class="btn btn-sm bg-blue-500 text-white border-0 ml-auto">New Group</a>
-      <a href="/topics/newtopic" class="btn btn-sm bg-blue-500 text-white border-0">New Topic</a>
+      <a href="#" class="btn btn-sm bg-blue-500 text-white border-0 ml-auto" hx-get="/groups/create" hx-target="#content" hx-trigger="click">New Group</a>
+      <a href="#" class="btn btn-sm bg-blue-500 text-white border-0" hx-get="/topics/newtopic" hx-target="#content" hx-trigger="click">New Topic</a>
     </nav>
   {% endif %}
 
   <div class="mx-auto max-w-screen-md">
-      <div class="w-full mx-auto">{% block content %}{% endblock %}</div>
+      <div class="w-full mx-auto" id="content">
+          {% block content %}{% endblock %}
+      </div>
   </div>
 </main>
-<div id="modal-container"></div>
 <footer class="bg-blue-500 text-white py-4 mt-auto">
     <div class="container mx-auto">
         <p class="text-center">&copy; 2023 - ♠ Pylabar ♠</p>
-    </div>  
+    </div>
 </footer>
 
 </body>
