@@ -1,7 +1,10 @@
+#File: app/business/groups/services/group.py
+
+from fastapi import Depends
+
 from app.business.groups.models.group import GroupDto
 from app.domain.groups.models import Group
 from app.domain.groups.repositories.group import GroupSQLRepository
-from fastapi import Depends
 
 
 def parse_to_dto(group_entity: Group):

@@ -1,9 +1,13 @@
 #File: app/business/topics/services/topic.py
+
+from datetime import datetime
+
+from fastapi import Depends
+
 from app.business.topics.models.topic import TopicDto, CreateTopicDto
 from app.domain.topics.models import Topic
 from app.domain.topics.repositories.topic import TopicSQLRepository
-from fastapi import Depends
-from datetime import datetime
+
 
 date_format = "%Y-%m-%d %H:%M:%S"
 

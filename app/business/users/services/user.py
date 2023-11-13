@@ -1,10 +1,12 @@
+# File: app/business/users/services/user.py
+
 from typing import Optional
+
+from fastapi import Depends
+
 from app.business.users.models.user import CreateUserRequest
 from app.domain.users.models.user import User
 from app.domain.users.repositories.user import UserSQLRepository
-from fastapi import Depends
-
-from app.common.services.sse import EventPublisher
 
 
 class UserService:

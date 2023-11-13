@@ -1,3 +1,4 @@
+#File: static/__init__.py
 """
 Almacena activos estáticos como imágenes, archivos JS y CSS.
 ----

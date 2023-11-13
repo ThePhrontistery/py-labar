@@ -1,3 +1,4 @@
+# File: app/domain/topics/repositories/__init__.py
 """
 Gestiona la interacción y persistencia de datos con bases de datos o fuentes externas.
 ----
