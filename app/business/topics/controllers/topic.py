@@ -1,15 +1,15 @@
+#File: app/business/topics/controllers/topic.py
+
 from datetime import date, datetime
 import logging
 
 from fastapi import APIRouter, Request, Depends, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
-# from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
+
 from app.business.topics.models.topic import CreateTopicDto
 from app.business.topics.services.topic import TopicService
-
 from app.business.users.controllers.user import get_user_manager, router as user_router  
-# from app.business.topics.services.topic import TopicService
 from app.business.groups.services.group import GroupService
 
 templates = Jinja2Templates(directory="templates")

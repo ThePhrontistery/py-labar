@@ -1,3 +1,4 @@
+#File: app/__init__.py
 """
 Directorio principal que contiene los módulos de la aplicación.
 ----

@@ -1,10 +1,14 @@
-from fastapi import Depends
+# File: app/domain/users/repositories/user.py
+
 from typing import Optional
+
+from fastapi import Depends
 
 from app.common.base.base_repository import BaseSQLRepository
 from app.common.infra.sql_adaptors import get_async_session, AsyncSession
 from app.domain.users.models import User
 from app.business.users.models.user import CreateUserRequest
+
 
 class UserSQLRepository(BaseSQLRepository[User]):
 
