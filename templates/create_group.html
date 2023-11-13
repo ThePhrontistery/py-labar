@@ -50,17 +50,17 @@
           />
         </div>
       </fieldset>
-      <nav class="flex items-center justify-center gap-4">
-        <a
-          href="{{ url_for('return_home') }}"
-          class="btn bg-blue-500 text-white border-0 py-3 px-6 rounded"
-        >Volver</a>
+      <nav class="flex items-center justify-between">
         <button
           type="submit"
           class="btn bg-blue-500 text-white border-0 py-3 px-6 rounded"
         >
-          Crear Grupo
+          Guardar
         </button>
+        <a
+          href="{{ url_for('return_home') }}"
+          class="btn bg-blue-500 text-white border-0 py-3 px-6 rounded"
+        >Cancelar</a>
       </nav>
     </form>
   </div>
