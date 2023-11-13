@@ -40,10 +40,7 @@ async def login(request: Request, username: str = Form(...), password: str = For
     all_topics = await topic_service.get_all_topics()
     user_manager.username = username
     actual_date = datetime.now().date()
-    isHomePage = True
-    return templates.TemplateResponse("home.html",
-                                      {"request": request, "username": username, "table_topics": all_topics,
-                                       "actual_date": actual_date, "isHomePage": isHomePage})
+    return templates.TemplateResponse("home.html", {"request": request, "username": username, "table_topics": all_topics, "actual_date": actual_date})
 
 
 @router.get("/register", name="register_user")
@@ -67,11 +64,9 @@ async def register(request: Request, username: str = Form(...), email: str = For
 @router.get("/home", response_class=HTMLResponse, name="return_home")
 async def login(request: Request, topic_service: TopicService = Depends(TopicService)):
     all_topics = await topic_service.get_all_topics()
-    isHomePage = True
     actual_date = datetime.now().date()
     return templates.TemplateResponse("home.html", {"request": request, "username": user_manager.username,
-                                                    "table_topics": all_topics, "actual_date": actual_date,
-                                                    "isHomePage": isHomePage})
+                                                    "table_topics": all_topics, "actual_date": actual_date})
 
 
 @router.get("/", name="logout_user")
