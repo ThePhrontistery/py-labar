@@ -91,8 +91,5 @@ async def delete_topic(
     
     #topic = await topic_service.get_topic(topic_id)
     await topic_service.delete_topic(topic_id)
-    print("*"*len(topic_id))
-    print(topic_id)
-    print("*"*len(topic_id))
     home_url = user_router.url_path_for("return_home")
     return RedirectResponse(url=home_url, status_code=302)
