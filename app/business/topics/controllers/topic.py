@@ -1,3 +1,4 @@
+from datetime import date, datetime
 import logging
 
 from fastapi import APIRouter, Request, Depends, Form
@@ -33,6 +34,38 @@ async def create_topic(
     autor_manager = get_user_manager()
     create_topic_request = CreateTopicDto(title=title, close_date=close_date, author=autor_manager.username, group_id=group, type="emoji", question=title)
     await topic_service.create_topic(create_topic_request)
+    
+    
+    home_url = user_router.url_path_for("return_home")
+
+    return RedirectResponse(url=home_url, status_code=302)
+
+@router.post("/reopen", response_class=HTMLResponse, name="reopen_topic")
+async def reopen_topic(
+    request: Request,
+    topic_id: str = Form(...),
+    close_date: date = Form(...),
+    topic_service: TopicService = Depends(TopicService)
+):
+    
+    topic = await topic_service.get_topic(topic_id)
+    await topic_service.edit_topic(topic_id, topic.title, topic.type, topic.question, topic.author, topic.group_id, close_date)
+    
+    
+    home_url = user_router.url_path_for("return_home")
+
+    return RedirectResponse(url=home_url, status_code=302)
+
+@router.post("/close", response_class=HTMLResponse, name="close_topic")
+async def close_topic(
+    request: Request,
+    topic_id: str = Form(...),
+    topic_service: TopicService = Depends(TopicService)
+):
+    
+    actual_date = datetime.now().date()
+    topic = await topic_service.get_topic(topic_id)
+    await topic_service.edit_topic(topic_id, topic.title, topic.type, topic.question, topic.author, topic.group_id, actual_date)
     
     
     home_url = user_router.url_path_for("return_home")
