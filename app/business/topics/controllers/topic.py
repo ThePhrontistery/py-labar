@@ -1,10 +1,9 @@
-#File: app/business/topics/controllers/topic.py
-
-import datetime
+from datetime import date, datetime
 import logging
 
 from fastapi import APIRouter, Request, Depends, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
+# from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
 from app.business.topics.models.topic import CreateTopicDto
 from app.business.topics.services.topic import TopicService
@@ -69,11 +68,9 @@ async def close_topic(
     await topic_service.edit_topic(topic_id, topic.title, topic.type, topic.question, topic.author, topic.group_id, actual_date)
     
     
-
     home_url = user_router.url_path_for("return_home")
 
     return RedirectResponse(url=home_url, status_code=302)
-
 
 @router.delete("/delete_topic/{topic_id}", name="delete_topic")
 async def delete_topic(
@@ -83,18 +80,14 @@ async def delete_topic(
 ):
     """
     Deletes a topic.
-
     Args:
         request (Request): The request object.
         topic_id (str): The ID of the topic to be deleted.
         topic_service (TopicService): Dependency injection of the TopicService.
-
     Returns:
         RedirectResponse: Redirects to the home page after deletion.
     """
     # autor_manager = get_user_manager()
     await topic_service.delete_topic(topic_id)
-
     home_url = user_router.url_path_for("return_home")
     return RedirectResponse(url=home_url, status_code=302)
-
