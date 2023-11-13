@@ -1,6 +1,6 @@
 #File: app/business/groups/controllers/group.py
 
-from fastapi import APIRouter, Depends, FastAPI, Request, Form
+from fastapi import APIRouter, Depends, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from starlette.responses import RedirectResponse
@@ -20,6 +20,18 @@ router = APIRouter(prefix="/groups")
 
 @router.get("/create", response_class=HTMLResponse)
 async def create_group(request: Request, user_service: UserService = Depends(UserService)):
+    """
+    Asynchronously handles a GET request to create a new group, rendering a template with all available users.
+
+    This endpoint is mapped to respond to the '/create' path with an HTML response. It uses an instance of `UserService` to fetch all users and includes them in the rendered HTML template for group creation.
+
+    Parameters:
+    - request (Request): The request object containing request-specific information.
+    - user_service (UserService, optional): The user service dependency, which is responsible for user-related operations. Defaults to an instance provided by the `Depends` function.
+
+    Returns:
+    - TemplateResponse: An instance of `TemplateResponse` that renders the 'create_group.html' template. The template is provided with the current request, the username of the user initiating the request (obtained from `user_manager`), and a list of all users (fetched using `user_service`).
+    """
     user_manager = get_user_manager()
     all_users = await user_service.get_all_users()
     return templates.TemplateResponse("create_group.html", {"request": request, "username": user_manager.username, "all_users": all_users})
