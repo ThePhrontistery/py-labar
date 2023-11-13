@@ -1,89 +1,10 @@
 #File: app/business/topics/controllers/topic.py
+
+import datetime
 import logging
 
 from fastapi import APIRouter, Request, Depends, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
-# from starlette.responses import RedirectResponse
-from starlette.templating import Jinja2Templates
-from app.business.topics.models.topic import CreateTopicDto
-from app.business.topics.services.topic import TopicService
-
-from app.business.users.controllers.user import get_user_manager, router as user_router  
-# from app.business.topics.services.topic import TopicService
-from app.business.groups.services.group import GroupService
-
-templates = Jinja2Templates(directory="templates")
-router = APIRouter(prefix="/topics")
-
-logger = logging.getLogger(__name__)
-
-@router.get("/newtopic", response_class=HTMLResponse, name="new_topic")
-async def new_topic(request: Request, group_service: GroupService = Depends(GroupService)):
-    user_manager = get_user_manager()
-    all_groups = await group_service.get_all_groups()
-    return templates.TemplateResponse("new_topic.html", {"request": request, "username": user_manager.username, "all_groups": all_groups})
-
-@router.post("/create", response_class=HTMLResponse, name="create_topic")
-async def create_topic(
-    request: Request,
-    title: str = Form(...),
-    close_date: str = Form(...),
-    group: str = Form(...),
-    topic_service: TopicService = Depends(TopicService)
-):
-    autor_manager = get_user_manager()
-    create_topic_request = CreateTopicDto(title=title, close_date=close_date, author=autor_manager.username, group_id=group, type="emoji", question=title)
-    await topic_service.create_topic(create_topic_request)
-    
-    
-
-    home_url = user_router.url_path_for("return_home")
-
-    return RedirectResponse(url=home_url, status_code=302)
-
-@router.delete("/delete_topic/{topic_id}", name="delete_topic")
-async def delete_topic(
-    request: Request,
-    topic_id: str,
-    topic_service: TopicService = Depends(TopicService)
-):
-    """
-    Deletes a topic.
-
-    Args:
-        request (Request): The request object.
-        topic_id (str): The ID of the topic to be deleted.
-        topic_service (TopicService): Dependency injection of the TopicService.
-
-    Returns:
-        RedirectResponse: Redirects to the home page after deletion.
-    """
-    # autor_manager = get_user_manager()
-    await topic_service.delete_topic(topic_id)
-
-    home_url = user_router.url_path_for("return_home")
-    return RedirectResponse(url=home_url, status_code=302)
-
-# @router.get("/confirm_delete_modal", name ="confirm_delete_modal")
-# async def confirm_delete_modal(request: Request, topic_id: str):
-#     """
-#     Serves the confirmation modal for deleting a topic.
-
-#     Args:
-#         request (Request): The request object.
-#         topic_id (str): The ID of the topic to be deleted.
-#         topic_title (str): The title of the topic to be deleted.
-
-#     Returns:
-#         TemplateResponse: The confirmation modal template.
-#     """
-#     return templates.TemplateResponse("confirm_delete_modal.html", 
-#                                       {"request": request, "topic_id": topic_id})from datetime import date, datetime
-import logging
-
-from fastapi import APIRouter, Request, Depends, Form
-from fastapi.responses import HTMLResponse, RedirectResponse
-# from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
 from app.business.topics.models.topic import CreateTopicDto
 from app.business.topics.services.topic import TopicService
@@ -152,3 +73,28 @@ async def close_topic(
     home_url = user_router.url_path_for("return_home")
 
     return RedirectResponse(url=home_url, status_code=302)
+
+
+@router.delete("/delete_topic/{topic_id}", name="delete_topic")
+async def delete_topic(
+    request: Request,
+    topic_id: str,
+    topic_service: TopicService = Depends(TopicService)
+):
+    """
+    Deletes a topic.
+
+    Args:
+        request (Request): The request object.
+        topic_id (str): The ID of the topic to be deleted.
+        topic_service (TopicService): Dependency injection of the TopicService.
+
+    Returns:
+        RedirectResponse: Redirects to the home page after deletion.
+    """
+    # autor_manager = get_user_manager()
+    await topic_service.delete_topic(topic_id)
+
+    home_url = user_router.url_path_for("return_home")
+    return RedirectResponse(url=home_url, status_code=302)
+
