@@ -5,7 +5,7 @@ from fastapi import APIRouter, Request, Depends, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 # from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
-from app.business.topics.models.topic import CreateTopicDto, DeleteTopicDto
+from app.business.topics.models.topic import CreateTopicDto
 from app.business.topics.services.topic import TopicService
 
 from app.business.users.controllers.user import get_user_manager, router as user_router  
@@ -41,45 +41,44 @@ async def create_topic(
 
     return RedirectResponse(url=home_url, status_code=302)
 
-# @router.delete("/delete_topic/{topic_id}", name="delete_topic")
-# async def delete_topic(
-#     request: Request,
-#     topic_id: str,
-#     topic_service: TopicService = Depends(TopicService)
-# ):
-#     """
-#     Deletes a topic.
-
-#     Args:
-#         request (Request): The request object.
-#         topic_id (str): The ID of the topic to be deleted.
-#         topic_service (TopicService): Dependency injection of the TopicService.
-
-#     Returns:
-#         RedirectResponse: Redirects to the home page after deletion.
-#     """
-#     # autor_manager = get_user_manager()
-#     delete_topic_request = DeleteTopicDto(topic_id=topic_id)
-#     await topic_service.delete_topic(delete_topic_request)
-
-#     home_url = user_router.url_path_for("return_home")
-#     return RedirectResponse(url=home_url, status_code=302)
-
-@router.get("/confirm_delete_modal", name ="confirm_delete_modal")
-async def confirm_delete_modal(request: Request, topic_id: str):
+@router.delete("/delete_topic/{topic_id}", name="delete_topic")
+async def delete_topic(
+    request: Request,
+    topic_id: str,
+    topic_service: TopicService = Depends(TopicService)
+):
     """
-    Serves the confirmation modal for deleting a topic.
+    Deletes a topic.
 
     Args:
         request (Request): The request object.
         topic_id (str): The ID of the topic to be deleted.
-        topic_title (str): The title of the topic to be deleted.
+        topic_service (TopicService): Dependency injection of the TopicService.
 
     Returns:
-        TemplateResponse: The confirmation modal template.
+        RedirectResponse: Redirects to the home page after deletion.
     """
-    return templates.TemplateResponse("confirm_delete_modal.html", 
-                                      {"request": request, "topic_id": topic_id})from datetime import date, datetime
+    # autor_manager = get_user_manager()
+    await topic_service.delete_topic(topic_id)
+
+    home_url = user_router.url_path_for("return_home")
+    return RedirectResponse(url=home_url, status_code=302)
+
+# @router.get("/confirm_delete_modal", name ="confirm_delete_modal")
+# async def confirm_delete_modal(request: Request, topic_id: str):
+#     """
+#     Serves the confirmation modal for deleting a topic.
+
+#     Args:
+#         request (Request): The request object.
+#         topic_id (str): The ID of the topic to be deleted.
+#         topic_title (str): The title of the topic to be deleted.
+
+#     Returns:
+#         TemplateResponse: The confirmation modal template.
+#     """
+#     return templates.TemplateResponse("confirm_delete_modal.html", 
+#                                       {"request": request, "topic_id": topic_id})from datetime import date, datetime
 import logging
 
 from fastapi import APIRouter, Request, Depends, Form

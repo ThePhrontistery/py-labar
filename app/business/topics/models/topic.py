@@ -27,9 +27,3 @@ class CreateTopicDto(BaseModel):
 
     class Config:
         orm_mode = True
-
-class DeleteTopicDto(BaseModel):
-    id: str
-
-    class Config:
-        orm_mode = True
