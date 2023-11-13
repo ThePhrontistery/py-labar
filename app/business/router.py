@@ -1,7 +1,8 @@
+#File: app/business/router.py
+
 from fastapi import APIRouter, Request
 from starlette.templating import Jinja2Templates
 
-# Include all routers here
 from app.business.users.controllers import user
 from app.business.groups.controllers import group
 from app.business.topics.controllers import topic

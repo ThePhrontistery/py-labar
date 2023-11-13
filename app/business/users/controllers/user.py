@@ -1,6 +1,9 @@
+#File: app/business/users/controllers/user.py
+
+from datetime import datetime
 import logging
 
-from fastapi import APIRouter, FastAPI, Request, Form, Depends
+from fastapi import APIRouter, Request, Form, Depends
 from fastapi.responses import HTMLResponse
 from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
@@ -8,7 +11,7 @@ from starlette.templating import Jinja2Templates
 from app.business.users.services.user import UserService
 from app.business.users.models.user import CreateUserRequest
 from app.business.topics.services.topic import TopicService
-from datetime import datetime
+
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()

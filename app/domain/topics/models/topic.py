@@ -1,10 +1,12 @@
+# File: app/domain/topics/models/topic.py
+
 from datetime import date
+
 from sqlmodel import Field
 
 from app.common.base.base_entity import BaseUUIDModel
 
 
-# DB ENTITY
 class Topic(BaseUUIDModel, table=True):
     title: str = Field(nullable=False)
     type: str = Field(nullable=False)

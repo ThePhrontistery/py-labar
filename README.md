@@ -1,6 +1,15 @@
 # Pylabar : An Automated Notification and Feedback System
 py-labar is a fast and convenient way to get the opinion of people on various topics, incluging rating, implemented in Python.
- 
+
+![Pylabar Banner](https://github.com/ThePhrontistery/py-labar/blob/main/static/Dallebanner%20(2).png)
+
+<div>
+  <p>
+    <a href=# target="_blank">
+      <img width="100%" src="https://github.com/ThePhrontistery/py-labar/blob/main/static/Dallebanner%20(2).png"></a>
+  </p>
+<div>
+
 ## Use Cases
 - Employees can quickly get opinions or feedback from colleagues on a specific topic.
 
@@ -20,8 +29,9 @@ Make sure you have the following components installed before running the applica
 ## Dependencies
 Dependencies are automatically managed by **Poetry**
 
-To install dependencies run
+To turn on the environment and install dependencies  run
 ```bash
+poetry shell
 poetry install
 ```
 
@@ -38,12 +48,10 @@ Refer to [this link](https://www.jetbrains.com/help/pycharm/poetry.html) to conf
 You can launch the uvicorn live directly server with the command :
 
 ```shell
-uvicorn app.main:app --reload
+python main.py
 ```
 
-- **app.main**: the directory app and file main.py.
-- **:app**: the object created inside of main.py with the line app = FastAPI().
-- **--reload**: make the server restart after code changes. Only use for development.
+
 
 
 ♠ 
