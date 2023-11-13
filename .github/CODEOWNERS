@@ -1,0 +1,31 @@
+# CODEOWNERS file for the pylabar repository
+
+# The following users are the default owners for everything in the repo.
+# Whenever a pull request is opened that affects any file in the repository,
+# these users will be automatically requested for review.
+
+*       @pchocron @andsanchez @jjarbona
+
+
+# This are the instructions for the CODEOWNERS file for the pylabar repository
+
+# These owners will be the default owners for everything in the repo.
+# Unless a later match takes precedence, @ThePhrontistery and the specified team
+# will be requested for review when someone opens a pull request.
+# <!-- *       @ThePhrontistery -->
+
+# Order is important. The last matching pattern has the most precedence.
+# So, if a file is matched by multiple patterns, only the last matching pattern
+# will apply.
+
+# You can specify individual users or teams as code owners.
+
+# For example, for anything in the 'business' directory, 'business-team' is responsible
+# <!-- /app/business/    @business-team -->
+
+# For the 'common' directory, we could have a 'common-team' or a specific user
+# <!-- /app/common/      @common-user -->
+
+# You can also specify patterns for individual files
+# <!-- /pyproject.toml   @config-manager -->
+# <!-- /main.py          @main-dev -->

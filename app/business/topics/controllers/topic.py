@@ -71,3 +71,25 @@ async def close_topic(
     home_url = user_router.url_path_for("return_home")
 
     return RedirectResponse(url=home_url, status_code=302)
+
+@router.post("/delete_topic", response_class=HTMLResponse, name="delete_topic")
+async def delete_topic(
+    request: Request,
+    topic_id: str = Form(...),
+    topic_service: TopicService = Depends(TopicService)
+):
+    """
+    Deletes a topic.
+    Args:
+        request (Request): The request object.
+        topic_id (str): The ID of the topic to be deleted.
+        topic_service (TopicService): Dependency injection of the TopicService.
+    Returns:
+        RedirectResponse: Redirects to the home page after deletion.
+    """
+    # autor_manager = get_user_manager()
+    
+    #topic = await topic_service.get_topic(topic_id)
+    await topic_service.delete_topic(topic_id)
+    home_url = user_router.url_path_for("return_home")
+    return RedirectResponse(url=home_url, status_code=302)

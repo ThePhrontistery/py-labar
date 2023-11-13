@@ -1,0 +1,17 @@
+<!-- File: templates/confirm_delete_modal.html -->
+<div class="modal" id="confirm-modal">
+    <div class="modal-box">
+        <h3 class="font-bold text-lg">Confirmation</h3>
+        <p class="py-4">Are you sure you want to delete the topic "{{ topic_title }}"?</p>
+        <div class="modal-action">
+            <a href="#" 
+               class="btn btn-error" 
+               hx-delete="/topics/delete_topic/{{ topic_id }}" 
+               hx-target="body" 
+               hx-swap="outerHTML">
+               Delete
+            </a>
+            <a href="#" class="btn" onclick="document.getElementById('confirm-modal').outerHTML = '';">Cancel</a>
+        </div>
+    </div>
+</div>
