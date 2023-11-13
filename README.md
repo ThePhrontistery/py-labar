@@ -3,13 +3,6 @@ py-labar is a fast and convenient way to get the opinion of people on various to
 
 ![Pylabar Banner](https://github.com/ThePhrontistery/py-labar/blob/main/static/Dallebanner%20(2).png)
 
-<div>
-  <p>
-    <a href=# target="_blank">
-      <img width="100%" src="https://github.com/ThePhrontistery/py-labar/blob/main/static/Dallebanner%20(2).png"></a>
-  </p>
-<div>
-
 ## Use Cases
 - Employees can quickly get opinions or feedback from colleagues on a specific topic.
 
