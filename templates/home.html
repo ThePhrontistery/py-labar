@@ -18,52 +18,66 @@
       <td class="px-4 py-2 text-left">{{ topic.title }}</td>
       <td class="px-4 py-2 text-center">
         {% if topic.close_date <= actual_date %}
-          <span>Cerrado</span>
-        {% else %} 
-          <span>Abierto</span>
+        <span>Cerrado</span>
+        {% else %}
+        <span>Abierto</span>
         {% endif %}
       </td>
       <td class="px-4 py-2 text-center">{{ topic.author }}</td>
       <td class="px-4 py-2 text-center fecha-celda">{{ topic.close_date }}</td>
       <td class="px-4 py-2 text-center">
         {% if topic.close_date <= actual_date %}
-          <a href="#" class="btn btn-xs btn-ghost text-blue-500">
-            <i class="fas fa-lock-open fa-lg" title="Abrir"></i>
-          </a>
-          <a href="#" class="btn btn-xs btn-ghost text-grey-500 disabled" onclick="return false;">
-            <i class="fas fa-lock fa-lg" title="Cerrar"></i>
-          </a>
-
-        <a href="#" 
-          class="btn btn-xs btn-ghost text-blue-500" 
-          hx-get="/topics/confirm_delete_modal?topic_id={{ topic.id }}"
-          hx-target="#modal-container"
-          hx-swap="innerHTML">
+        <a
+          href="#"
+          class="btn btn-xs btn-ghost text-blue-500"
+          onclick="openModal('{{ topic.id }}')"
+        >
+          <i class="fas fa-lock-open fa-lg" title="Abrir"></i>
+        </a>
+        <a
+          href="#"
+          class="btn btn-xs btn-ghost text-grey-500 disabled"
+          onclick="return false;"
+        >
+          <i class="fas fa-lock fa-lg" title="Cerrar"></i>
+        </a>
+        <a href="#" class="btn btn-xs btn-ghost text-blue-500">
           <i class="fas fa-trash-alt fa-lg" title="Borrar"></i>
-       </a>
-
-          <a href="#" class="btn btn-xs btn-ghost text-grey-500 disabled" onclick="return false;">
-            <i class="fas fa-thumbs-up fa-lg" title="Votar"></i>
-          </a>
-          <a href="#" class="btn btn-xs btn-ghost text-blue-500">
-            <i class="fas fa-chart-bar fa-lg" title="Resultados"></i>
-          </a>
-        {% else %} 
-          <a href="#" class="btn btn-xs btn-ghost text-grey-500 disabled" onclick="return false;">
-            <i class="fas fa-lock-open fa-lg" title="Abrir"></i>
-          </a>
-          <a href="#" class="btn btn-xs btn-ghost text-blue-500">
-            <i class="fas fa-lock fa-lg" title="Cerrar"></i>
-          </a>
-          <a href="#" class="btn btn-xs btn-ghost text-blue-500" onclick="return false;">
-            <i class="fas fa-trash-alt fa-lg" title="Borrar"></i>
-          </a>
-          <a href="#" class="btn btn-xs btn-ghost text-blue-500">
-            <i class="fas fa-thumbs-up fa-lg" title="Votar"></i>
-          </a>
-          <a href="#" class="btn btn-xs btn-ghost text-grey-500 disabled" onclick="return false;">
-            <i class="fas fa-chart-bar fa-lg" title="Resultados"></i>
-          </a>
+        </a>
+        <a
+          href="#"
+          class="btn btn-xs btn-ghost text-grey-500 disabled"
+          onclick="return false;"
+        >
+          <i class="fas fa-thumbs-up fa-lg" title="Votar"></i>
+        </a>
+        <a href="#" class="btn btn-xs btn-ghost text-blue-500">
+          <i class="fas fa-chart-bar fa-lg" title="Resultados"></i>
+        </a>
+        {% else %}
+        <a
+          href="#"
+          class="btn btn-xs btn-ghost text-grey-500 disabled"
+          onclick="return false;"
+        >
+          <i class="fas fa-lock-open fa-lg" title="Abrir"></i>
+        </a>
+        <a href="#" class="btn btn-xs btn-ghost text-blue-500" onclick="cerrarTopic('{{ topic.id }}')">
+          <i class="fas fa-lock fa-lg" title="Cerrar"></i>
+        </a>
+        <a href="#" class="btn btn-xs btn-ghost text-blue-500">
+          <i class="fas fa-trash-alt fa-lg" title="Borrar"></i>
+        </a>
+        <a href="#" class="btn btn-xs btn-ghost text-blue-500">
+          <i class="fas fa-thumbs-up fa-lg" title="Votar"></i>
+        </a>
+        <a
+          href="#"
+          class="btn btn-xs btn-ghost text-grey-500 disabled"
+          onclick="return false;"
+        >
+          <i class="fas fa-chart-bar fa-lg" title="Resultados"></i>
+        </a>
         {% endif %}
       </td>
     </tr>
@@ -71,11 +85,27 @@
   </tbody>
 </table>
 
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2 class="text-2xl font-bold mb-6 text-blue-500">Elegir la nueva fecha de cierre</h2>
+    <!-- Agrega aquí el campo para elegir la fecha -->
+    <form method="post" action="{{ url_for('reopen_topic') }}">
+      <input type="hidden" id="topic_id" name="topic_id" value="">
+      <input type="date" id="close_date" name="close_date">
+      <div class="modal-buttons">
+        <button class="btn bg-blue-500 text-white border-0 py-3 px-6 rounded" type="submit">Guardar</button>
+        <button class="btn bg-blue-500 text-white border-0 py-3 px-6 rounded" id="cancelar" onclick="closeModal()">Cancelar</button>
+      </div>
+    </form>    
+  </div>
+</div>
+
 <style>
   i[title]::after {
     content: attr(title);
     position: absolute;
-    background: rgba(0, 0, 0, 0.7);
+    background: transparent;
     color: #fff;
     padding: 5px;
     border-radius: 5px;
@@ -92,33 +122,119 @@
   }
 
   .btn.disabled {
-  pointer-events: none;
-}
+    pointer-events: none;
+  }
 
-.btn.disabled:hover {
-  /* No se realizará ninguna acción al pasar el ratón por encima */
-}
+  .btn.disabled:hover {
+    /* No se realizará ninguna acción al pasar el ratón por encima */
+  }
+
+   /* Estilo para el modal */
+   .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    visibility: visible; 
+    pointer-events: auto;
+  }
+
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto; /* Centra el modal horizontalmente */
+  }
+
+  /* Estilo para el botón de cerrar */
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333; /* Color oscuro similar al texto original */
+  }
+
+  /* Estilo para el input de fecha */
+  #fechaCierre {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  /* Estilo para los botones */
+  .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
 </style>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-    var celdasFecha = document.querySelectorAll('.fecha-celda');
+  document.addEventListener("DOMContentLoaded", function () {
+    var celdasFecha = document.querySelectorAll(".fecha-celda");
 
-    celdasFecha.forEach(function(celda) {
-
+    celdasFecha.forEach(function (celda) {
       var fechaISO = celda.textContent;
-      
+
       var fecha = new Date(fechaISO);
-      
+
       var dia = fecha.getDate();
-      var mes = fecha.getMonth() + 1; 
+      var mes = fecha.getMonth() + 1;
       var año = fecha.getFullYear();
-      
-      var fechaFormateada = ("0" + dia).slice(-2) + "-" + ("0" + mes).slice(-2) + "-" + año;
+
+      var fechaFormateada =
+        ("0" + dia).slice(-2) + "-" + ("0" + mes).slice(-2) + "-" + año;
 
       celda.textContent = fechaFormateada;
-     });
     });
-  </script>
+  });
+
+  function openModal(id_topic) {
+    console.log(id_topic);
+    var modal = document.getElementById("myModal");
+    document.getElementById('topic_id').value = id_topic;
+    modal.style.display = "block";
+  }
+
+  function closeModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+  }
+
+  function cerrarTopic(id_topic) {
+
+    var form = document.createElement("form");
+    form.setAttribute("method", "POST");
+    form.setAttribute("action", "{{ url_for('close_topic') }}");
+
+    // Crear un campo oculto con el ID del tema
+    var idInput = document.createElement("input");
+    idInput.setAttribute("type", "hidden");
+    idInput.setAttribute("name", "topic_id");
+    idInput.setAttribute("value", id_topic);
+
+    form.appendChild(idInput);
+    document.body.appendChild(form);
+    form.submit();
+  }
+</script>
 
 {% endblock %}
