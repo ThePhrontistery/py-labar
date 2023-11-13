@@ -41,7 +41,9 @@
         >
           <i class="fas fa-lock fa-lg" title="Cerrar"></i>
         </a>
-        <a href="#" class="btn btn-xs btn-ghost text-blue-500">
+        <a href="#" 
+           class="btn btn-xs btn-ghost text-blue-500"
+           onclick="deleteTopic('{{ topic.id }}')">
           <i class="fas fa-trash-alt fa-lg" title="Borrar"></i>
         </a>
         <a
@@ -62,10 +64,14 @@
         >
           <i class="fas fa-lock-open fa-lg" title="Abrir"></i>
         </a>
-        <a href="#" class="btn btn-xs btn-ghost text-blue-500" onclick="cerrarTopic('{{ topic.id }}')">
+        <a href="#" 
+        class="btn btn-xs btn-ghost text-blue-500" 
+        onclick="cerrarTopic('{{ topic.id }}')">
           <i class="fas fa-lock fa-lg" title="Cerrar"></i>
         </a>
-        <a href="#" class="btn btn-xs btn-ghost text-blue-500">
+        <a href="#" 
+        class="btn btn-xs btn-ghost text-blue-500" 
+        onclick="deleteTopic('{{ topic.id }}')">
           <i class="fas fa-trash-alt fa-lg" title="Borrar"></i>
         </a>
         <a href="#" class="btn btn-xs btn-ghost text-blue-500">
@@ -224,6 +230,24 @@
     var form = document.createElement("form");
     form.setAttribute("method", "POST");
     form.setAttribute("action", "{{ url_for('close_topic') }}");
+
+    // Crear un campo oculto con el ID del tema
+    var idInput = document.createElement("input");
+    idInput.setAttribute("type", "hidden");
+    idInput.setAttribute("name", "topic_id");
+    idInput.setAttribute("value", id_topic);
+
+    form.appendChild(idInput);
+    document.body.appendChild(form);
+    form.submit();
+  }
+
+
+  function deleteTopic(id_topic) {
+
+    var form = document.createElement("form");
+    form.setAttribute("method", "POST");
+    form.setAttribute("action", "{{ url_for('delete_topic') }}");
 
     // Crear un campo oculto con el ID del tema
     var idInput = document.createElement("input");
