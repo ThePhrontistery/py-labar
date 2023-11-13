@@ -24,7 +24,7 @@
 # <!-- /app/business/    @business-team -->
 
 # For the 'common' directory, we could have a 'common-team' or a specific user
-<!-- /app/common/      @common-user -->
+# <!-- /app/common/      @common-user -->
 
 # You can also specify patterns for individual files
 # <!-- /pyproject.toml   @config-manager -->
