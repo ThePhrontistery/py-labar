@@ -53,7 +53,7 @@
         >
           <i class="fas fa-thumbs-up fa-lg" title="Votar"></i>
         </a>
-        <a href="#" class="btn btn-xs btn-ghost text-blue-500">
+        <a  href="{{ url_for('modal_resultados') }}" hx-get="{{ url_for('modal_resultados') }}" hx-vars="{'topic_id':'{{ topic.id }}'}" hx-trigger="click" hx-target="#modalResultados" class="btn btn-xs btn-ghost text-blue-500">
           <i class="fas fa-chart-bar fa-lg" title="Resultados"></i>
         </a>
         {% else %}
@@ -106,6 +106,9 @@
     </form>    
   </div>
 </div>
+
+<div id="modalVotacion"></div>
+<div id="modalResultados"></div>
 
 <style>
   i[title]::after {
