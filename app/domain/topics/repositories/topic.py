@@ -2,11 +2,12 @@
 from uuid import UUID
 
 from fastapi import Depends
-from app.business.topics.models.topic import CreateTopicDto
+from app.business.topics.models.topic import CreateTopicDto, CreateVoteDto
 
 from app.common.base.base_repository import BaseSQLRepository
 from app.common.infra.sql_adaptors import get_async_session, AsyncSession
 from app.domain.topics.models import Topic
+from app.domain.topics.models.topic import Vote
 
 
 class TopicSQLRepository(BaseSQLRepository[Topic]):

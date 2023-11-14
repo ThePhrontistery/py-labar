@@ -3,14 +3,15 @@
 from datetime import date, datetime
 import logging
 
-from fastapi import APIRouter, Request, Depends, Form
+from fastapi import APIRouter, Request, Depends, Form, Response
 from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.templating import Jinja2Templates
 
-from app.business.topics.models.topic import CreateTopicDto
+from app.business.topics.models.topic import CreateTopicDto, CreateVoteDto
 from app.business.topics.services.topic import TopicService
 from app.business.users.controllers.user import get_user_manager, router as user_router  
 from app.business.groups.services.group import GroupService
+from app.business.users.services.user import UserService
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(prefix="/topics")
@@ -152,5 +153,32 @@ async def delete_topic(
         RedirectResponse: Redirects to the home page after deletion.
     """
     await topic_service.delete_topic(topic_id)
+    home_url = user_router.url_path_for("return_home")
+    return RedirectResponse(url=home_url, status_code=302)
+
+@router.get("/modal_votacion", response_class=HTMLResponse, name="modal_votacion")
+async def modal_votacion(request: Request, topic_id: str, topic_service: TopicService = Depends(TopicService)):
+    user_manager = get_user_manager()
+    topic = await topic_service.get_topic(topic_id)
+    vote = await topic_service.get_vote(topic_id, user_manager.username)
+    if vote is not None:
+
+        return templates.TemplateResponse("error_vote_message.html", {"request": request})
+
+    return templates.TemplateResponse("modal_votacion.html", {"request": request, "username": user_manager.username, "topic": topic})
+
+@router.post("/vote", name="create_vote")
+async def create_vote(
+    request: Request,
+    id_topic: str = Form(...),
+    voto: str = Form(...),
+    user_service: UserService = Depends(UserService),
+    topic_service: TopicService = Depends(TopicService)
+):
+    autor_manager = get_user_manager()
+    autor = await user_service.get_user_by_username(autor_manager.username)
+    create_vote_request = CreateVoteDto(id_topic=id_topic, user=autor.username, value=voto)
+    await topic_service.create_vote(create_vote_request)
+
     home_url = user_router.url_path_for("return_home")
     return RedirectResponse(url=home_url, status_code=302)
