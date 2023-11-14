@@ -142,10 +142,12 @@ async def delete_topic(
     ):
     """
     Deletes a topic.
+
     Args:
         request (Request): The request object.
         topic_id (str): The ID of the topic to be deleted.
         topic_service (TopicService): Dependency injection of the TopicService.
+        
     Returns:
         RedirectResponse: Redirects to the home page after deletion.
     """
