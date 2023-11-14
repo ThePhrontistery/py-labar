@@ -1,5 +1,6 @@
 <!-- File: templates/create_group.html -->
-  <div class="container mx-auto mt-12 p-6">
+{% extends 'base.html' %} {% block content %}
+<div class="container mx-auto mt-12 p-6">
     <h1 class="text-4xl font-bold mb-6 text-blue-500">Crear Grupo</h1>
     <form method="post" action="{{ url_for('create_group') }}">
       <fieldset class="mb-6">
@@ -63,7 +64,7 @@
       </nav>
     </form>
   </div>
-
+  {% endblock %}
   <style>
 
     .form-checkbox:checked {
@@ -71,7 +72,6 @@
       background-color: #3b82f6;
     }
   </style>
-
 <script>
     document.addEventListener('htmx:afterSwap', function (event) {
       const xhr = event.detail.xhr;

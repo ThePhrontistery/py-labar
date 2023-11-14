@@ -16,7 +16,7 @@ all_router.include_router(topic.router, tags=["Topic Views"])
 templates = Jinja2Templates(directory="templates")
 
 
-@all_router.get("/", name="index", tag=["Index"])
+@all_router.get("/", name="index")
 async def index_page(
     request: Request
     ):
