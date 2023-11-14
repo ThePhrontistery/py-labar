@@ -16,8 +16,8 @@ In this section you will find an overview on how to execute and configure the pr
 ## Requirements
 
 Make sure you have the following components installed before running the application:
-- Python 3.12.0
-- Poetry 1.6.1
+- [Python](https://www.python.org/) 3.12.0
+- [Poetry](https://python-poetry.org/) 1.6.1
 
 ## Dependencies
 Dependencies are automatically managed by **Poetry**
@@ -44,7 +44,34 @@ You can launch the uvicorn live directly server with the command :
 python main.py
 ```
 
+## Technologies used to develop Pylabar
 
+* [Python](https://www.python.org/) as the main programming language
+* [FastAPI](https://fastapi.tiangolo.com/) as the main framework
+* [Starlette](https://www.starlette.io/) prefered for certain web services responses
+* [Pydantic](https://docs.pydantic.dev/latest/) for frontend data validation
+* [HTMX](https://htmx.org/) for handling dynamic interactions (instead of raw JavaScript)
+* [Jinja templates](https://jinja.palletsprojects.com/en/3.1.x/) with HTML and CSS for the frontend
+* [SQLite](https://www.sqlite.org/index.html) for the local database
+* [unittest](https://docs.python.org/3/library/unittest.html) and [pytest](https://docs.pytest.org/) for testing
+* [mypy](https://mypy-lang.org/) for static type cheking
 
+## Documentation
+
+To read the API docs, open the following page:
+
+[`http:localhost/docs`](http://127.0.0.1:8000/docs) for classic OpenAPI docs
+
+Aditional information can be found in py-labar's repo Wiki:
+
+[PyLabar Wiki](https://github.com/ThePhrontistery/py-labar/wiki)
+
+## Credits
+
+* [DALL-E](https://openai.com/dall-e-2) as Pylabar logo creator
+* [ChatGPT](https://chat.openai.com/) as Coding asistant
+* [Ing. Andres Sanchez](https://github.com/andsanchez) as Team leader
+* [Ing. Juan Arbona](https://github.com/jjarbona) as Frontend Developer
+* [Ing. Paola Chocron](https://github.com/pchocron) as Python Developer
 
 ♠ 
