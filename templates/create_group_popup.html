@@ -1,7 +1,7 @@
 <!-- File: templates/create_group_popup.html -->
 <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal">
     <div class="container mx-auto mt-12 p-6 bg-white rounded shadow-lg z-50 overflow-y-auto">
-      <form method="post" action="{{ url_for('create_group') }}">
+      
         <!-- Group creation fields -->
         <!-- ...same content as in create_group.html... -->
         {% include 'create_group.html' %}
@@ -9,7 +9,7 @@
         <button type="button" onclick="document.getElementById('my-modal').style.display='none'" class="btn bg-red-500 text-white border-0 py-3 px-6 rounded">
           Cerrar
         </button>
-      </form>
+    
     </div>
   </div>
   
