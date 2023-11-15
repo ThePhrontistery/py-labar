@@ -45,3 +45,11 @@ class CreateTopicDto(BaseModel):
 
     class Config:
         orm_mode = True
+
+class CreateVoteDto(BaseModel):
+    id_topic: str
+    user: str
+    value: str
+    
+    class Config:
+        orm_mode = True

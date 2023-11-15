@@ -1,0 +1,50 @@
+<!-- Archivo: templates/error_message.html -->
+    <style>
+      .modal-error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+      .error-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    position: relative;
+  }
+
+  /* Estilo para el botón de cerrar */
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+    text-decoration: none;
+  }
+
+  .close:hover {
+    color: #555;
+  }
+    </style>
+<div class="modal-error" id="errorModal">
+    <div class="error-container">
+      <a href="/home" class="close">&times;</a>
+      <h2 class="text-2xl font-bold mb-6 text-red-500">Error</h2>
+      <p>Ya has votado este topic. No puedes votar de nuevo.</p>
+    </div>
+  </div>
+
