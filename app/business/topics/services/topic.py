@@ -5,9 +5,7 @@ from datetime import datetime
 from fastapi import Depends
 
 from app.business.topics.models.topic import TopicDto, CreateTopicDto
-from app.business.topics.models.vote import CreateVoteDto
 from app.domain.topics.models import Topic
-from app.domain.topics.models.vote import Vote
 from app.domain.topics.repositories.topic import TopicSQLRepository
 from app.domain.topics.repositories.vote import VoteSQLRepository
 
@@ -21,9 +19,8 @@ def parse_to_dto(topic_entity: Topic):
 
 class TopicService:
 
-    def __init__(self, repository: TopicSQLRepository = Depends(TopicSQLRepository), vote_repository: VoteSQLRepository = Depends(VoteSQLRepository)):
+    def __init__(self, repository: TopicSQLRepository = Depends(TopicSQLRepository)):
         self.topic_repo = repository
-        self.vote_repo = vote_repository
 
     async def create_topic(self,  create_req: CreateTopicDto) -> Topic:
         raw_new_topic = await self.topic_repo.create(create_req = create_req)
@@ -50,14 +47,3 @@ class TopicService:
 
     async def get_all_topics(self):
         return await self.topic_repo.get_all_topics()
-    
-    async def create_vote(self,  create_req: CreateVoteDto) -> Vote:
-        raw_new_topic = await self.vote_repo.createVote(create_req = create_req)
-        return raw_new_topic
-    
-    async def get_vote(self,  id_topic: str, username: str) -> Vote:
-        raw_new_topic = await self.vote_repo.get_by_user_and_topic(username, id_topic)
-        return raw_new_topic
-    
-    async def get_votes_by_topic(self,  id_topic: str) -> Vote:
-        return await self.vote_repo.get_by_topic(id_topic)
