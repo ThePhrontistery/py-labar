@@ -41,11 +41,12 @@
         >
           <i class="fas fa-lock fa-lg" title="Cerrar"></i>
         </a>
-        <a href="#" 
+        <button href="#" 
            class="btn btn-xs btn-ghost text-blue-500"
-           onclick="deleteTopic('{{ topic.id }}')">
+           hx-delete="deleteTopic('{{ topic.id }}')"
+           hx-confirm="¿Seguro que quieres borrar el topic: {{topic.title}}?">
           <i class="fas fa-trash-alt fa-lg" title="Borrar"></i>
-        </a>
+      </button>
         <a
           href="#"
           class="btn btn-xs btn-ghost text-grey-500 disabled"
