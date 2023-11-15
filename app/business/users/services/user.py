@@ -33,3 +33,6 @@ class UserService:
             return True
         else:
             return False
+        
+    async def get_user_by_username(self, username: str) -> User:
+        return await self.user_repository.get_by_username(username)

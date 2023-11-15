@@ -5,8 +5,11 @@ from datetime import datetime
 from fastapi import Depends
 
 from app.business.topics.models.topic import TopicDto, CreateTopicDto
+from app.business.topics.models.vote import CreateVoteDto
 from app.domain.topics.models import Topic
+from app.domain.topics.models.vote import Vote
 from app.domain.topics.repositories.topic import TopicSQLRepository
+from app.domain.topics.repositories.vote import VoteSQLRepository
 
 
 date_format = "%Y-%m-%d %H:%M:%S"
@@ -18,8 +21,9 @@ def parse_to_dto(topic_entity: Topic):
 
 class TopicService:
 
-    def __init__(self, repository: TopicSQLRepository = Depends(TopicSQLRepository)):
+    def __init__(self, repository: TopicSQLRepository = Depends(TopicSQLRepository), vote_repository: VoteSQLRepository = Depends(VoteSQLRepository)):
         self.topic_repo = repository
+        self.vote_repo = vote_repository
 
     async def create_topic(self,  create_req: CreateTopicDto) -> Topic:
         raw_new_topic = await self.topic_repo.create(create_req = create_req)

@@ -17,6 +17,8 @@ group_repository = GroupSQLRepository()
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(prefix="/groups")
 
+PATH_FOR_RETURN_HOME = user_router.url_path_for("return_home")
+
 
 @router.get("/create", response_class=HTMLResponse)
 async def create_group(
@@ -72,9 +74,8 @@ async def create_group(
     # Puedes agregar una redirección o una respuesta de éxito aquí
     # return {"message": "Grupo creado exitosamente", "group_id": created_group.id}
     #return RedirectResponse(url="/login", status_code=302)
-    home_url = user_router.url_path_for("return_home")
 
-    return RedirectResponse(url=home_url, status_code=302)
+    return RedirectResponse(url=PATH_FOR_RETURN_HOME, status_code=302)
 
 @router.post("/update_users")
 def update_users(
