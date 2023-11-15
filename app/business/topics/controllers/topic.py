@@ -19,6 +19,8 @@ router = APIRouter(prefix="/topics")
 
 logger = logging.getLogger(__name__)
 
+PATH_FOR_RETURN_HOME = user_router.url_path_for("return_home")
+
 
 @router.get("/newtopic", response_class=HTMLResponse, name="new_topic")
 async def new_topic(
@@ -72,7 +74,6 @@ async def create_topic(
     create_topic_request = CreateTopicDto(title=title, close_date=close_date, author=autor_manager.username, group_id=group, type="emoji", question=title)
     await topic_service.create_topic(create_topic_request)
     
-    home_url = user_router.url_path_for("return_home")
     return RedirectResponse(url=home_url, status_code=302)
 
 
@@ -100,8 +101,7 @@ async def reopen_topic(
     topic = await topic_service.get_topic(topic_id)
     await topic_service.edit_topic(topic_id, topic.title, topic.type, topic.question, topic.author, topic.group_id, close_date)
     
-    home_url = user_router.url_path_for("return_home")
-    return RedirectResponse(url=home_url, status_code=302)
+    return RedirectResponse(url=PATH_FOR_RETURN_HOME, status_code=302)
 
 
 @router.post("/close", response_class=HTMLResponse, name="close_topic")
@@ -129,11 +129,8 @@ async def close_topic(
     actual_date = datetime.now().date()
     topic = await topic_service.get_topic(topic_id)
     await topic_service.edit_topic(topic_id, topic.title, topic.type, topic.question, topic.author, topic.group_id, actual_date)
-    
-    
-    home_url = user_router.url_path_for("return_home")
 
-    return RedirectResponse(url=home_url, status_code=302)
+    return RedirectResponse(url=PATH_FOR_RETURN_HOME, status_code=302)
 
 
 @router.post("/delete_topic", response_class=HTMLResponse, name="delete_topic")
@@ -154,8 +151,8 @@ async def delete_topic(
         RedirectResponse: Redirects to the home page after deletion.
     """
     await topic_service.delete_topic(topic_id)
-    home_url = user_router.url_path_for("return_home")
-    return RedirectResponse(url=home_url, status_code=302)
+
+    return RedirectResponse(url=PATH_FOR_RETURN_HOME, status_code=302)
 
 @router.get("/modal_votation", response_class=HTMLResponse, name="modal_votation")
 async def modal_votation(request: Request, topic_id: str, topic_service: TopicService = Depends(TopicService)):
@@ -172,14 +169,13 @@ async def modal_votation(request: Request, topic_id: str, topic_service: TopicSe
 async def create_vote(
     request: Request,
     id_topic: str = Form(...),
-    voto: str = Form(...),
+    vote: str = Form(...),
     user_service: UserService = Depends(UserService),
     topic_service: TopicService = Depends(TopicService)
 ):
     autor_manager = get_user_manager()
     autor = await user_service.get_user_by_username(autor_manager.username)
-    create_vote_request = CreateVoteDto(id_topic=id_topic, user=autor.username, value=voto)
+    create_vote_request = CreateVoteDto(id_topic=id_topic, user=autor.username, value=vote)
     await topic_service.create_vote(create_vote_request)
 
-    home_url = user_router.url_path_for("return_home")
-    return RedirectResponse(url=home_url, status_code=302)
+    return RedirectResponse(url=PATH_FOR_RETURN_HOME, status_code=302)

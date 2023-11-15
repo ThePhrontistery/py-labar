@@ -6,16 +6,16 @@
         <form method="post" action="{{ url_for('create_vote') }}">
             <input type="hidden" id="id_topic" name="id_topic" value="{{topic.id}}">
             <ol class="emoji-list">
-                <li><label><input type="radio" name="voto" value="1"><span class="emoji-large"> &#x1F604;</span></label></li>
-                <li><label><input type="radio" name="voto" value="2"><span class="emoji-large"> &#x1F642;</span></label></li>
-                <li><label><input type="radio" name="voto" value="3"><span class="emoji-large"> &#x1F610;</span></label></li>
-                <li><label><input type="radio" name="voto" value="4"><span class="emoji-large"> &#x1F614;</span></label></li>
-                <li><label><input type="radio" name="voto" value="5"><span class="emoji-large"> &#x1F62D;</span></label></li>
+                <li><label><input type="radio" name="vote" value="1"><span class="emoji-large"> &#x1F604;</span></label></li>
+                <li><label><input type="radio" name="vote" value="2"><span class="emoji-large"> &#x1F642;</span></label></li>
+                <li><label><input type="radio" name="vote" value="3"><span class="emoji-large"> &#x1F610;</span></label></li>
+                <li><label><input type="radio" name="vote" value="4"><span class="emoji-large"> &#x1F614;</span></label></li>
+                <li><label><input type="radio" name="vote" value="5"><span class="emoji-large"> &#x1F62D;</span></label></li>
             </ol>
 
             <!-- Botones -->
             <div class="modal-buttons">
-                <button hx-params="voto, id_topic" class="btn bg-blue-500 text-white border-0 py-3 px-6 rounded" type="submit">Votar</button>
+                <button hx-params="vote, id_topic" class="btn bg-blue-500 text-white border-0 py-3 px-6 rounded" type="submit">Votar</button>
                 <a href="/home" class="btn bg-blue-500 text-white border-0 py-3 px-6 rounded">Cancelar</a>
             </div>
         </form>   
