@@ -180,13 +180,13 @@ async def create_vote(
 
     return RedirectResponse(url=PATH_FOR_RETURN_HOME, status_code=302)
 
-@router.get("/modal_resultados", response_class=HTMLResponse, name="modal_resultados")
-async def modal_resultados(request: Request, topic_id: str, topic_service: TopicService = Depends(TopicService)):
+@router.get("/modal_results", response_class=HTMLResponse, name="modal_results")
+async def modal_results(request: Request, topic_id: str, topic_service: TopicService = Depends(TopicService)):
     topic = await topic_service.get_topic(topic_id)
     votes = await topic_service.get_votes_by_topic(topic_id)
     grouped_votes = group_by_value(votes)
 
-    return templates.TemplateResponse("modal_resultados.html", {"request": request, "votes": grouped_votes, "topic": topic})
+    return templates.TemplateResponse("modal_results.html", {"request": request, "votes": grouped_votes, "topic": topic})
 
 
 def group_by_value(votes):

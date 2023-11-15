@@ -33,8 +33,7 @@ class TopicService:
         raw_topic = await self.topic_repo.get(uid=topic_id)
         await self.topic_repo.delete(model=raw_topic)
 
-    async def edit_topic(self, topic_id: str, title: str, type: str, question: str, author: str, group_id: str,
-                         close_date: str) -> Topic:
+    async def edit_topic(self, topic_id: str, title: str, type: str, question: str, author: str, group_id: str, close_date: str) -> Topic:
         raw_topic = await self.topic_repo.get(uid=topic_id)
         raw_topic.title = title
         raw_topic.type = type
@@ -62,4 +61,3 @@ class TopicService:
     
     async def get_votes_by_topic(self,  id_topic: str) -> Vote:
         return await self.vote_repo.get_by_topic(id_topic)
-         
