@@ -74,7 +74,7 @@ async def create_topic(
     create_topic_request = CreateTopicDto(title=title, close_date=close_date, author=autor_manager.username, group_id=group, type="emoji", question=title)
     await topic_service.create_topic(create_topic_request)
     
-    return RedirectResponse(url=home_url, status_code=302)
+    return RedirectResponse(url=PATH_FOR_RETURN_HOME, status_code=302)
 
 
 @router.post("/reopen", response_class=HTMLResponse, name="reopen_topic")
