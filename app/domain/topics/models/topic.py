@@ -15,8 +15,3 @@ class Topic(BaseUUIDModel, table=True):
     group_id: str = Field(nullable=True)
     visits: int = Field(default=0)
     close_date: date = Field(nullable=True)
-
-class Vote(BaseUUIDModel, table=True):
-    id_topic: str = Field(nullable=False)
-    user: str = Field(nullable=False)
-    value: str = Field(nullable=False)

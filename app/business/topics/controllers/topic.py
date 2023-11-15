@@ -7,7 +7,8 @@ from fastapi import APIRouter, Request, Depends, Form, Response
 from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.templating import Jinja2Templates
 
-from app.business.topics.models.topic import CreateTopicDto, CreateVoteDto
+from app.business.topics.models.topic import CreateTopicDto
+from app.business.topics.models.vote import CreateVoteDto
 from app.business.topics.services.topic import TopicService
 from app.business.users.controllers.user import get_user_manager, router as user_router  
 from app.business.groups.services.group import GroupService
@@ -156,8 +157,8 @@ async def delete_topic(
     home_url = user_router.url_path_for("return_home")
     return RedirectResponse(url=home_url, status_code=302)
 
-@router.get("/modal_votacion", response_class=HTMLResponse, name="modal_votacion")
-async def modal_votacion(request: Request, topic_id: str, topic_service: TopicService = Depends(TopicService)):
+@router.get("/modal_votation", response_class=HTMLResponse, name="modal_votation")
+async def modal_votation(request: Request, topic_id: str, topic_service: TopicService = Depends(TopicService)):
     user_manager = get_user_manager()
     topic = await topic_service.get_topic(topic_id)
     vote = await topic_service.get_vote(topic_id, user_manager.username)
@@ -165,7 +166,7 @@ async def modal_votacion(request: Request, topic_id: str, topic_service: TopicSe
 
         return templates.TemplateResponse("error_vote_message.html", {"request": request})
 
-    return templates.TemplateResponse("modal_votacion.html", {"request": request, "username": user_manager.username, "topic": topic})
+    return templates.TemplateResponse("modal_votation.html", {"request": request, "username": user_manager.username, "topic": topic})
 
 @router.post("/vote", name="create_vote")
 async def create_vote(

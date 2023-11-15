@@ -5,12 +5,12 @@ from uuid import UUID
 from fastapi import Depends
 from sqlmodel import select
 from sqlalchemy.orm import selectinload
-from app.business.topics.models.topic import CreateTopicDto, CreateVoteDto
+from app.business.topics.models.vote import CreateVoteDto
 
 from app.common.base.base_repository import BaseSQLRepository
 from app.common.infra.sql_adaptors import get_async_session, AsyncSession
 from app.domain.topics.models import Topic
-from app.domain.topics.models.topic import Vote
+from app.domain.topics.models.vote import Vote
 
 
 class VoteSQLRepository(BaseSQLRepository[Vote]):

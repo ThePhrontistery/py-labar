@@ -4,9 +4,10 @@ from datetime import datetime
 
 from fastapi import Depends
 
-from app.business.topics.models.topic import CreateVoteDto, TopicDto, CreateTopicDto
+from app.business.topics.models.topic import TopicDto, CreateTopicDto
+from app.business.topics.models.vote import CreateVoteDto
 from app.domain.topics.models import Topic
-from app.domain.topics.models.topic import Vote
+from app.domain.topics.models.vote import Vote
 from app.domain.topics.repositories.topic import TopicSQLRepository
 from app.domain.topics.repositories.vote import VoteSQLRepository
 
