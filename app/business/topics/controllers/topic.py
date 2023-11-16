@@ -152,8 +152,29 @@ async def delete_topic(
         RedirectResponse: Redirects to the home page after deletion.
     """
     await topic_service.delete_topic(topic_id)
-
     return RedirectResponse(url=PATH_FOR_RETURN_HOME, status_code=302)
+
+
+@router.get("/create_group_popup", response_class=HTMLResponse, name="create_group_popup")
+async def create_group_popup(
+    request: Request,
+    user_service: UserService = Depends(UserService)
+    ):
+    """
+    Asynchronously renders the 'create_group' popup form.
+
+    This endpoint is designed to display a modal or popup form for creating a new group. It fetches all user information using the provided UserService and passes this data to the template for rendering as a form in a popup.
+
+    Args:
+        request (Request): The request object, which includes all the details of the HTTP request.
+        user_service (UserService): A service to handle user-related operations, injected as a dependency.
+
+    Returns:
+        TemplateResponse: The 'create_group.html' template rendered with the necessary context, including all available users.
+    """
+    all_users = await user_service.get_all_users()
+    return templates.TemplateResponse("create_group_popup.html", {"request": request, "all_users": all_users})
+
 
 @router.get("/modal_votation", response_class=HTMLResponse, name="modal_votation")
 async def modal_votation(request: Request, topic_id: str, topic_service: TopicService = Depends(TopicService), vote_service: VoteService = Depends(VoteService)):
