@@ -1,0 +1,95 @@
+<!-- templates/topics_partial.html -->
+
+<table class="table-auto w-full mt-4 border-collapse">
+  <!-- head -->
+  <thead class="bg-blue-500 text-white">
+    <tr>
+      <th class="px-4 py-2">Título</th>
+      <th class="px-4 py-2">Estado</th>
+      <th class="px-4 py-2">Autor</th>
+      <th class="px-4 py-2">Fecha Cierre</th>
+      <th class="px-4 py-2">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for topic in table_topics %}
+    <tr class="tr_index border-b border-gray-300">
+      <td class="px-4 py-2 text-left">{{ topic.title }}</td>
+      <td class="px-4 py-2 text-center">
+        {% if topic.close_date <= actual_date %}
+        <span>Cerrado</span>
+        {% else %}
+        <span>Abierto</span>
+        {% endif %}
+      </td>
+      <td class="px-4 py-2 text-center">{{ topic.author }}</td>
+      <td class="px-4 py-2 text-center fecha-celda">{{ topic.close_date }}</td>
+      <td class="px-4 py-2 text-center">
+        {% if topic.close_date <= actual_date %}
+        <a
+          href="#"
+          class="btn btn-xs btn-ghost text-blue-500"
+          onclick="openModal('{{ topic.id }}')"
+        >
+          <i class="fas fa-lock-open fa-lg" title="Abrir"></i>
+        </a>
+        <a
+          href="#"
+          class="btn btn-xs btn-ghost text-grey-500 disabled"
+          onclick="return false;"
+        >
+          <i class="fas fa-lock fa-lg" title="Cerrar"></i>
+        </a>
+        <button href="#"
+           class="btn btn-xs btn-ghost text-blue-500"
+           hx-delete="/topics/delete/{{topic.id}}"
+           hx-confirm="¿Seguro que quieres borrar el topic: {{topic.title}}?"
+           hx-target="#topic_table">
+          <i class="fas fa-trash-alt fa-lg" title="Borrar"></i>
+      </button>
+        <a
+          href="#"
+          class="btn btn-xs btn-ghost text-grey-500 disabled"
+          onclick="return false;"
+        >
+          <i class="fas fa-thumbs-up fa-lg" title="Votar"></i>
+        </a>
+        <a  href="{{ url_for('modal_results') }}" hx-get="{{ url_for('modal_results') }}" hx-vars="{'topic_id':'{{ topic.id }}'}" hx-trigger="click" hx-target="#modalResultados" class="btn btn-xs btn-ghost text-blue-500">
+          <i class="fas fa-chart-bar fa-lg" title="Resultados"></i>
+        </a>
+        {% else %}
+        <a
+          href="#"
+          class="btn btn-xs btn-ghost text-grey-500 disabled"
+          onclick="return false;"
+        >
+          <i class="fas fa-lock-open fa-lg" title="Abrir"></i>
+        </a>
+        <a href="#"
+        class="btn btn-xs btn-ghost text-blue-500"
+        onclick="cerrarTopic('{{ topic.id }}')">
+          <i class="fas fa-lock fa-lg" title="Cerrar"></i>
+        </a>
+        <a href="#"
+        class="btn btn-xs btn-ghost text-blue-500"
+        hx-delete="/topics/delete/{{topic.id}}"
+           hx-confirm="¿Seguro que quieres borrar el topic: {{topic.title}}?"
+           hx-target="#topic_table">
+          <i class="fas fa-trash-alt fa-lg" title="Borrar"></i>
+        </a>
+        <a href="{{ url_for('modal_votation') }}" hx-get="{{ url_for('modal_votation') }}" hx-vars="{'topic_id':'{{ topic.id }}'}" hx-trigger="click" hx-target="#modalVotation" class="btn btn-xs btn-ghost text-blue-500">
+          <i class="fas fa-thumbs-up fa-lg" title="Votar"></i>
+        </a>
+        <a
+          href="#"
+          class="btn btn-xs btn-ghost text-grey-500 disabled"
+          onclick="return false;"
+        >
+          <i class="fas fa-chart-bar fa-lg" title="Resultados"></i>
+        </a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
