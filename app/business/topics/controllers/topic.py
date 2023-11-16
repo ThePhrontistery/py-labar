@@ -153,7 +153,29 @@ async def delete_topic(
 
     all_topics = await topic_service.get_all_topics()
     actual_date = datetime.now().date()
-    return templates.TemplateResponse("partials/topics_partial.html", {"request": request, "table_topics": all_topics, "actual_date": actual_date})
+    return templates.TemplateResponse("partials/topics_partial.html",
+                                      {"request": request, "table_topics": all_topics, "actual_date": actual_date})
+
+
+@router.get("/create_group_popup", response_class=HTMLResponse, name="create_group_popup")
+async def create_group_popup(
+        request: Request,
+        user_service: UserService = Depends(UserService)
+):
+    """
+    Asynchronously renders the 'create_group' popup form.
+
+    This endpoint is designed to display a modal or popup form for creating a new group. It fetches all user information using the provided UserService and passes this data to the template for rendering as a form in a popup.
+
+    Args:
+        request (Request): The request object, which includes all the details of the HTTP request.
+        user_service (UserService): A service to handle user-related operations, injected as a dependency.
+
+    Returns:
+        TemplateResponse: The 'create_group.html' template rendered with the necessary context, including all available users.
+    """
+    all_users = await user_service.get_all_users()
+    return templates.TemplateResponse("create_group_popup.html", {"request": request, "all_users": all_users})
 
 
 @router.get("/modal_votation", response_class=HTMLResponse, name="modal_votation")

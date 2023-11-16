@@ -38,7 +38,7 @@ Refer to [this link](https://www.jetbrains.com/help/pycharm/poetry.html) to conf
 
 ## Running on local
 
-You can launch the uvicorn live directly server with the command :
+You can launch the web application with the command :
 
 ```shell
 python main.py

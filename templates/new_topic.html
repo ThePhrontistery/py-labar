@@ -27,14 +27,14 @@
           required
         />
       </div>
-      <div class="my-4">
-        <label for="group" class="block text-sm font-medium text-gray-600"
+      <div class="my-4 flex items-center">
+        <label for="group" class="block text-sm font-medium text-gray-600 mr-2"
           >Elegir un grupo:</label
         >
         <select
           id="group"
           name="group"
-          class="block w-full bg-white px-4 py-2 pr-8 rounded"
+          class="block bg-white px-4 py-2 pr-8 rounded"
         >
           {% for group in all_groups %}
           <option name="group_id" value="{{ group.id }}">
@@ -42,6 +42,14 @@
           </option>
           {% endfor %}
         </select>
+        <button
+          hx-get="{{ url_for('create_group_popup') }}"
+          hx-target="#popup"
+          hx-swap="outerHTML"
+          class="ml-2 p-2 bg-blue-500 text-white rounded-full"
+        >
+          +
+        </button>
       </div>
       <div id="response"></div>
     </fieldset>
@@ -59,4 +67,7 @@
       >
     </nav>
   </form>
+</div>
+<!-- Placeholder for the popup -->
+<div id="popup"></div> 
 </div>
