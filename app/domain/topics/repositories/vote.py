@@ -32,4 +32,12 @@ class VoteSQLRepository(BaseSQLRepository[Vote]):
             .options(selectinload('*'))
         )
         return result.one_or_none()
+    
+    async def get_by_topic(self, id_topic: str):
+        result = await self.session.exec(
+            select(Vote)
+            .where((Vote.id_topic == id_topic))
+            .options(selectinload('*'))
+        )
+        return result.all()
 
