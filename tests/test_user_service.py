@@ -89,7 +89,7 @@ class TestUserService:
         # Given
         expected_users = [
             User(id=1, **SOME_USER_DATA),
-            User(id=2, **SOME_USER_DATA)
+            User(id=2, **ANOTHER_USER_DATA)
         ]
         mock_repository.get_all_users.return_value = expected_users
 
