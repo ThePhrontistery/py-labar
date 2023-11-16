@@ -1,4 +1,4 @@
-#File: app/business/users/controllers/user.py
+# File: app/business/users/controllers/user.py
 
 from datetime import datetime
 import logging
@@ -11,7 +11,6 @@ from starlette.templating import Jinja2Templates
 from app.business.users.services.user import UserService
 from app.business.users.models.user import CreateUserRequest
 from app.business.topics.services.topic import TopicService
-
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()
@@ -33,12 +32,12 @@ def get_user_manager():
 
 @router.post("/home", response_class=HTMLResponse, name="login")
 async def login(
-    request: Request,
-    username: str = Form(...),
-    password: str = Form(...),
-    user_service: UserService = Depends(UserService),
-    topic_service: TopicService = Depends(TopicService)
-    ):
+        request: Request,
+        username: str = Form(...),
+        password: str = Form(...),
+        user_service: UserService = Depends(UserService),
+        topic_service: TopicService = Depends(TopicService)
+):
     """
     Asynchronously handles user login and redirects to the home page or displays an error.
 
@@ -63,13 +62,15 @@ async def login(
     all_topics = await topic_service.get_all_topics()
     user_manager.username = username
     actual_date = datetime.now().date()
-    return templates.TemplateResponse("home.html", {"request": request, "username": username, "table_topics": all_topics, "actual_date": actual_date})
+    return templates.TemplateResponse("home.html",
+                                      {"request": request, "username": username, "table_topics": all_topics,
+                                       "actual_date": actual_date})
 
 
 @router.get("/register", name="register_user")
 async def register_user(
-    request: Request
-    ):
+        request: Request
+):
     """
     Asynchronously renders the user registration page.
 
@@ -86,12 +87,12 @@ async def register_user(
 
 @router.post("/register")
 async def register(
-    request: Request,
-    username: str = Form(...),
-    email: str = Form(...),
-    password: str = Form(...),
-    user_service: UserService = Depends(UserService)
-    ):
+        request: Request,
+        username: str = Form(...),
+        email: str = Form(...),
+        password: str = Form(...),
+        user_service: UserService = Depends(UserService)
+):
     """
     Asynchronously handles the user registration process.
 
@@ -122,9 +123,9 @@ async def register(
 
 @router.get("/home", response_class=HTMLResponse, name="return_home")
 async def login(
-    request: Request,
-    topic_service: TopicService = Depends(TopicService)
-    ):
+        request: Request,
+        topic_service: TopicService = Depends(TopicService)
+):
     """
     Asynchronously displays the home page with a list of all topics.
 
@@ -145,8 +146,8 @@ async def login(
 
 @router.get("/", name="logout_user")
 async def logout_user(
-    request: Request
-    ):
+        request: Request
+):
     """
     Asynchronously renders the logout or index page.
 
