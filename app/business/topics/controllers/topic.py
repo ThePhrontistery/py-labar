@@ -10,6 +10,7 @@ from starlette.templating import Jinja2Templates
 from app.business.topics.models.topic import CreateTopicDto
 from app.business.topics.models.vote import CreateVoteDto
 from app.business.topics.services.topic import TopicService
+from app.business.topics.services.vote import VoteService
 from app.business.users.controllers.user import get_user_manager, router as user_router  
 from app.business.groups.services.group import GroupService
 from app.business.users.services.user import UserService
@@ -176,10 +177,10 @@ async def create_group_popup(
 
 
 @router.get("/modal_votation", response_class=HTMLResponse, name="modal_votation")
-async def modal_votation(request: Request, topic_id: str, topic_service: TopicService = Depends(TopicService)):
+async def modal_votation(request: Request, topic_id: str, topic_service: TopicService = Depends(TopicService), vote_service: VoteService = Depends(VoteService)):
     user_manager = get_user_manager()
     topic = await topic_service.get_topic(topic_id)
-    vote = await topic_service.get_vote(topic_id, user_manager.username)
+    vote = await vote_service.get_vote(topic_id, user_manager.username)
     if vote is not None:
 
         return templates.TemplateResponse("error_vote_message.html", {"request": request})
@@ -192,11 +193,19 @@ async def create_vote(
     id_topic: str = Form(...),
     vote: str = Form(...),
     user_service: UserService = Depends(UserService),
-    topic_service: TopicService = Depends(TopicService)
+    vote_service: VoteService = Depends(VoteService)
 ):
     autor_manager = get_user_manager()
     autor = await user_service.get_user_by_username(autor_manager.username)
     create_vote_request = CreateVoteDto(id_topic=id_topic, user=autor.username, value=vote)
-    await topic_service.create_vote(create_vote_request)
+    await vote_service.create_vote(create_vote_request)
 
     return RedirectResponse(url=PATH_FOR_RETURN_HOME, status_code=302)
+
+@router.get("/modal_results", response_class=HTMLResponse, name="modal_results")
+async def modal_results(request: Request, topic_id: str, topic_service: TopicService = Depends(TopicService), vote_service: VoteService = Depends(VoteService)):
+    topic = await topic_service.get_topic(topic_id)
+    votes = await vote_service.get_votes_by_topic(topic_id)
+    grouped_votes = await vote_service.group_by_value(votes)
+
+    return templates.TemplateResponse("modal_results.html", {"request": request, "votes": grouped_votes, "topic": topic})
