@@ -125,7 +125,7 @@
         {% if username %}
         <nav class="flex items-right gap-4 padding-top">
           <a href="#" class="btn btn-sm bg-blue-500 text-white border-0 ml-auto" hx-get="/groups/create" hx-target="#content" hx-trigger="click">New Group</a>
-          <a href="#" class="btn btn-sm bg-blue-500 text-white border-0" hx-get="/topics/newtopic" hx-target="#content" hx-trigger="click">New Topic</a>
+          <a href="#" class="btn btn-sm bg-blue-500 text-white border-0" hx-get="/topics/newtopic" hx-target="#content" hx-trigger="click" id="new-topic-button">New Topic</a>
         </nav>
         {% endif %}
           {% block content %}{% endblock %}
