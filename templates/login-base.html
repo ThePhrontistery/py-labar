@@ -1,0 +1,68 @@
+<!-- File: templates/login-base.html -->
+<!DOCTYPE html>
+<html lang="en" data-theme="business" style="scroll-padding-top: 5rem; scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Pestaña del Navegador -->
+    <link rel="shortcut icon" href="{{ url_for('static', path='/static/favicon.ico') }}"/>
+    <title>♠PyLabar</title>
+    <!-- htmx -->
+    <script src="https://unpkg.com/htmx.org@1.9.8"></script>
+    <!-- Tailwind CSS and DaisyUI from CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.3.1/dist/full.min.css" rel="stylesheet" type="text/css"/>       
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="navbar bg-glass p-8 shadow-lg bg-base-100">
+        <div class="flex-none">
+            <span class="text-lg font-bold">♠ PyLabar</span>
+        </div>
+        <div class="flex-1"></div>
+        <div class="flex-none">
+        </div>
+    </header>
+
+    <!-- Main Section -->
+    <main class="flex flex-col md:flex-row gap-10 bg-base-content p-10">
+        <!-- Left Column -->
+        <div class="flex-1 flex justify-center items-center">
+            <img src="https://raw.githubusercontent.com/ThePhrontistery/py-labar/main/static/logopylabar.png" alt="PyLabar Logo">
+        </div>
+        <!-- Right Column -->
+        <div class="flex-1 flex justify-center items-center">
+            <!-- Login Form -->
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer p-10 bg-glass p-4 shadow-lg bg-base-100">
+        <div class="flex-1">
+            <p class="text-center">&copy; 2023 - ♠ Pylabar ♠ - All rights reserved</p>
+        </div>
+        <div class="flex-1"></div>
+        <div class="flex-1">
+            <a href="https://github.com/ThePhrontistery/py-labar/" target="_blank" class="flex justify-center">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 1C5.373 1 0 6.373 0 13c0 5.302 3.438 9.8 8.207 11.387.6.113.793-.26.793-.577 0-.285-.01-1.04-.016-2.04-3.338.725-4.043-1.61-4.043-1.61-.546-1.387-1.332-1.754-1.332-1.754-1.09-.745.082-.729.082-.729 1.205.084 1.839 1.238 1.839 1.238 1.07 1.835 2.807 1.305 3.492.998.109-.776.42-1.305.763-1.604-2.665-.302-5.466-1.333-5.466-5.932 0-1.312.468-2.384 1.235-3.222-.125-.303-.535-1.517.117-3.16 0 0 1.007-.322 3.3 1.23.957-.266 1.983-.398 3.003-.403 1.02.005 2.047.137 3.006.403 2.291-1.552 3.297-1.23 3.297-1.23.653 1.643.243 2.857.12 3.16.768.838 1.233 1.91 1.233 3.222 0 4.61-2.805 5.63-5.475 5.93.431.37.815 1.1.815 2.217 0 1.6-.015 2.888-.015 3.286 0 .319.192.694.797.576C20.565 22.8 24 18.302 24 13c0-6.627-5.373-12-12-12z"/>
+            </svg>
+            </a>
+        </div>
+    </footer>
+    
+    <script>
+        tailwind.config = {
+          plugins: [daisyui],
+          daisyui: {
+            themes: ["business"]
+          }
+        }
+    </script>
+
+</body>
+</html>
+</body>
+</html>
