@@ -15,24 +15,13 @@ class UserSQLRepository(BaseSQLRepository[User]):
     def __init__(self, session: AsyncSession = Depends(get_async_session)):
         super().__init__(User, session)
 
-    async def create(self,*, create_req: CreateUserRequest) -> User:
+    async def create(self, *, create_req: CreateUserRequest) -> User:
         new_user = User(username=create_req.username, email=create_req.email, password=create_req.password)
         await self.add(model=new_user)
         return new_user
-    
+
     async def get_by_username(self, username: str) -> Optional[User]:
-         return await self.get_one_by("username", username)
-    
+        return await self.get_one_by("username", username)
+
     async def get_all_users(self):
         return await self.get_all()
-    
-
-    # async def get_pending_todos(self) -> List[Todo]:
-    #     todos = await self.session.exec(select(Todo).where(Todo.done == False))
-    #     return todos.all()
-    #
-    # async def todo_done(self, todo_id: UUID) -> Todo:
-    #     todo = await self.get(uid=todo_id)
-    #     todo.done = True
-    #     await self.save(model=todo, refresh=False)
-    #     return todo

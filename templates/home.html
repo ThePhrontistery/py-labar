@@ -1,102 +1,14 @@
 <!-- File: templates/home.html -->
 {% extends 'base.html' %} {% block content %}
 
-<table class="table-auto w-full mt-4 border-collapse">
-  <!-- head -->
-  <thead class="bg-neutral">
-    <tr>
-    <th class="px-4 py-2">Title</th>
-    <th class="px-4 py-2">Status</th>
-    <th class="px-4 py-2">Author</th>
-    <th class="px-4 py-2">Closing Date</th>
-    <th class="px-4 py-2">Options</th>
-    </tr>
-  </thead>
-  <tbody class="text-neutral">
-    {% for topic in table_topics %}
-    <tr class="tr_index border-b border-base-300">
-    <!-- Title  -->
-    <td class="px-4 py-2 text-left">{{ topic.title }}</td>
-    <!-- Status  -->
-    <td class="px-4 py-2 text-center">
-    {% if topic.close_date <= actual_date %}
-    <span>Cerrado</span>
-    {% else %}
-    <span>Abierto</span>
-    {% endif %}
-    </td>
-    <!-- Author  -->
-    <td class="px-4 py-2 text-center">{{ topic.author }}</td>
-    <!-- Closing Date  -->
-    <td class="px-4 py-2 text-center fecha-celda">{{ topic.close_date }}</td>
-    <!-- Options  -->
-    <td class="px-4 py-2 text-center ">
-    {% if topic.close_date <= actual_date %}
-    <a href="#" class="btn btn-xs btn-ghost text-primary" onclick="openModal('{{ topic.id }}')">
-    <i class="fas fa-lock-open fa-lg" title="Abrir"></i>
-    </a>
-    <a
-    href="#"
-    class="btn btn-xs btn-ghost text-secondary disabled"
-    onclick="return false;"
-    >
-    <i class="fas fa-lock fa-lg" title="Cerrar"></i>
-    </a>
-    <button href="#" 
-      class="btn btn-xs btn-ghost text-primary"
-      hx-delete="deleteTopic('{{ topic.id }}')"
-      hx-confirm="¿Seguro que quieres borrar el topic: {{topic.title}}?">
-    <i class="fas fa-trash-alt fa-lg" title="Borrar"></i>
-    </button>
-    <a
-    href="#"
-    class="btn btn-xs btn-ghost text-secondary disabled"
-    onclick="return false;"
-    >
-    <i class="fas fa-thumbs-up fa-lg" title="Votar"></i>
-    </a>
-    <a  href="{{ url_for('modal_results') }}" hx-get="{{ url_for('modal_results') }}" hx-vars="{'topic_id':'{{ topic.id }}'}" hx-trigger="click" hx-target="#modalResultados" class="btn btn-xs btn-ghost text-accent">
-    <i class="fas fa-chart-bar fa-lg" title="Resultados"></i>
-    </a>
-    {% else %}
-    <a
-    href="#"
-    class="btn btn-xs btn-ghost text-secondary disabled"
-    onclick="return false;"
-    >
-    <i class="fas fa-lock-open fa-lg" title="Abrir"></i>
-    </a>
-    <a href="#" 
-    class="btn btn-xs btn-ghost text-primary" 
-    onclick="cerrarTopic('{{ topic.id }}')">
-    <i class="fas fa-lock fa-lg" title="Cerrar"></i>
-    </a>
-    <a href="#" 
-    class="btn btn-xs btn-ghost text-primary" 
-    onclick="deleteTopic('{{ topic.id }}')">
-    <i class="fas fa-trash-alt fa-lg" title="Borrar"></i>
-    </a>
-    <a href="{{ url_for('modal_votation') }}" hx-get="{{ url_for('modal_votation') }}" hx-vars="{'topic_id':'{{ topic.id }}'}" hx-trigger="click" hx-target="#modalVotation" class="btn btn-xs btn-ghost text-primary">
-    <i class="fas fa-thumbs-up fa-lg" title="Votar"></i>
-    </a>
-    <a
-    href="#"
-    class="btn btn-xs btn-ghost text-secondary disabled"
-    onclick="return false;"
-    >
-    <i class="fas fa-chart-bar fa-lg" title="Resultados"></i>
-    </a>
-    {% endif %}
-    </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div id="topic_table">
+{% include 'partials/topics_partial.html' %}
+</div>
 
 <div id="myModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal()">&times;</span>
-    <h2 class="text-2xl font-bold mb-6 text-primary">Elegir la nueva fecha de cierre</h2>
+    <h2 class="text-2xl font-bold mb-6 text-blue-500">Elegir la nueva fecha de cierre</h2>
     <!-- Agrega aquí el campo para elegir la fecha -->
     <form method="post" action="{{ url_for('reopen_topic') }}">
       <input type="hidden" id="topic_id" name="topic_id" value="">
@@ -161,23 +73,6 @@
     form.submit();
   }
 
-
-  function deleteTopic(id_topic) {
-
-    var form = document.createElement("form");
-    form.setAttribute("method", "POST");
-    form.setAttribute("action", "{{ url_for('delete_topic') }}");
-
-    // Crear un campo oculto con el ID del tema
-    var idInput = document.createElement("input");
-    idInput.setAttribute("type", "hidden");
-    idInput.setAttribute("name", "topic_id");
-    idInput.setAttribute("value", id_topic);
-
-    form.appendChild(idInput);
-    document.body.appendChild(form);
-    form.submit();
-  }
 </script>
 
 {% endblock %}

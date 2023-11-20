@@ -129,3 +129,9 @@ dmypy.json
 
 #poetry
 poetry.lock
+
+# Node
+tests/cypress/node_modules
+
+#Visual Studio Code
+tests/cypress/package-lock.json

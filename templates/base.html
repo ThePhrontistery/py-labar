@@ -38,19 +38,17 @@
         </div>
       </nav>
     </div>
-  </header>
-
-  <!-- Main Section -->
-  <main class=" mx-auto bg-neutral-content">
-    <div class=" mx-auto max-w-screen-md">
-      {% if username %}
-      <nav class="flex items-right gap-4 padding-top">
-      <a href="#" class="btn btn-sm bg-neutral  border-0 ml-auto" hx-get="/groups/create" hx-target="#content" hx-trigger="click">New Group</a>
-      <a href="#" class="btn btn-sm bg-neutral  border-0" hx-get="/topics/newtopic" hx-target="#content" hx-trigger="click">New Topic</a>
-      </nav>
-      {% endif %}
-      <div class="container w-full h-full mx-auto " id="content">
-        {% block content %}{% endblock %}
+</header>
+<main class="container mx-auto px-4">
+  <div class="mx-auto max-w-screen-md">
+      <div class="w-full mx-auto" id="content">
+        {% if username %}
+        <nav class="flex items-right gap-4 padding-top">
+          <a href="#" class="btn btn-sm bg-blue-500 text-white border-0 ml-auto" hx-get="/groups/create" hx-target="#content" hx-trigger="click">New Group</a>
+          <a href="#" class="btn btn-sm bg-blue-500 text-white border-0" hx-get="/topics/newtopic" hx-target="#content" hx-trigger="click">New Topic</a>
+        </nav>
+        {% endif %}
+          {% block content %}{% endblock %}
       </div>
     </div>
   </main>
