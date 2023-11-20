@@ -1,20 +1,22 @@
 <!-- templates/topics_partial.html -->
 
 <table class="table-auto w-full mt-4 border-collapse">
-  <!-- head -->
-  <thead class="bg-blue-500 text-white">
+  <!-- Table header -->
+  <thead class="bg-neutral">
     <tr>
-      <th class="px-4 py-2">Título</th>
-      <th class="px-4 py-2">Estado</th>
-      <th class="px-4 py-2">Autor</th>
-      <th class="px-4 py-2">Fecha Cierre</th>
-      <th class="px-4 py-2">Acciones</th>
+      <th class="px-4 py-2">Title</th>
+      <th class="px-4 py-2">Status</th>
+      <th class="px-4 py-2">Author</th>
+      <th class="px-4 py-2">Closing Date</th>
+      <th class="px-4 py-2">Options</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="text-neutral">
     {% for topic in table_topics %}
     <tr class="tr_index border-b border-gray-300">
+      <!-- Title -->
       <td class="px-4 py-2 text-left">{{ topic.title }}</td>
+      <!-- Status -->
       <td class="px-4 py-2 text-center">
         {% if topic.close_date <= actual_date %}
         <span>Cerrado</span>
@@ -22,26 +24,29 @@
         <span>Abierto</span>
         {% endif %}
       </td>
+      <!-- Author -->
       <td class="px-4 py-2 text-center">{{ topic.author }}</td>
+      <!-- Closing Date -->
       <td class="px-4 py-2 text-center fecha-celda">{{ topic.close_date }}</td>
+      <!-- Options -->
       <td class="px-4 py-2 text-center">
         {% if topic.close_date <= actual_date %}
         <a
           href="#"
-          class="btn btn-xs btn-ghost text-blue-500"
+          class="btn btn-xs btn-ghost text-primary"
           onclick="openModal('{{ topic.id }}')"
         >
           <i class="fas fa-lock-open fa-lg" title="Abrir"></i>
         </a>
         <a
           href="#"
-          class="btn btn-xs btn-ghost text-grey-500 disabled"
+          class="btn btn-xs btn-ghost text-secondary disabled"
           onclick="return false;"
         >
           <i class="fas fa-lock fa-lg" title="Cerrar"></i>
         </a>
         <button href="#"
-           class="btn btn-xs btn-ghost text-blue-500"
+           class="btn btn-xs btn-ghost text-primary"
            hx-delete="/topics/delete/{{topic.id}}"
            hx-confirm="¿Seguro que quieres borrar el topic: {{topic.title}}?"
            hx-target="#topic_table">
@@ -49,40 +54,40 @@
       </button>
         <a
           href="#"
-          class="btn btn-xs btn-ghost text-grey-500 disabled"
+          class="btn btn-xs btn-ghost text-secondary disabled"
           onclick="return false;"
         >
           <i class="fas fa-thumbs-up fa-lg" title="Votar"></i>
         </a>
-        <a  href="{{ url_for('modal_results') }}" hx-get="{{ url_for('modal_results') }}" hx-vars="{'topic_id':'{{ topic.id }}'}" hx-trigger="click" hx-target="#modalResultados" class="btn btn-xs btn-ghost text-blue-500">
+        <a  href="{{ url_for('modal_results') }}" hx-get="{{ url_for('modal_results') }}" hx-vars="{'topic_id':'{{ topic.id }}'}" hx-trigger="click" hx-target="#modalResultados" class="btn btn-xs btn-ghost text-accent">
           <i class="fas fa-chart-bar fa-lg" title="Resultados"></i>
         </a>
         {% else %}
         <a
           href="#"
-          class="btn btn-xs btn-ghost text-grey-500 disabled"
+          class="btn btn-xs btn-ghost text-secondary disabled"
           onclick="return false;"
         >
           <i class="fas fa-lock-open fa-lg" title="Abrir"></i>
         </a>
         <a href="#"
-        class="btn btn-xs btn-ghost text-blue-500"
+        class="btn btn-xs btn-ghost text-primary"
         onclick="cerrarTopic('{{ topic.id }}')">
           <i class="fas fa-lock fa-lg" title="Cerrar"></i>
         </a>
         <a href="#"
-        class="btn btn-xs btn-ghost text-blue-500"
+        class="btn btn-xs btn-ghost text-primary"
         hx-delete="/topics/delete/{{topic.id}}"
            hx-confirm="¿Seguro que quieres borrar el topic: {{topic.title}}?"
            hx-target="#topic_table">
           <i class="fas fa-trash-alt fa-lg" title="Borrar"></i>
         </a>
-        <a href="{{ url_for('modal_votation') }}" hx-get="{{ url_for('modal_votation') }}" hx-vars="{'topic_id':'{{ topic.id }}'}" hx-trigger="click" hx-target="#modalVotation" class="btn btn-xs btn-ghost text-blue-500">
+        <a href="{{ url_for('modal_votation') }}" hx-get="{{ url_for('modal_votation') }}" hx-vars="{'topic_id':'{{ topic.id }}'}" hx-trigger="click" hx-target="#modalVotation" class="btn btn-xs btn-ghost text-primary">
           <i class="fas fa-thumbs-up fa-lg" title="Votar"></i>
         </a>
         <a
           href="#"
-          class="btn btn-xs btn-ghost text-grey-500 disabled"
+          class="btn btn-xs btn-ghost text-secondary disabled"
           onclick="return false;"
         >
           <i class="fas fa-chart-bar fa-lg" title="Resultados"></i>
