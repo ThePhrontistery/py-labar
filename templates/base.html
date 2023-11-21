@@ -1,108 +1,108 @@
 <!-- File: templates/base.html -->
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="business">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="shortcut icon" href="{{ url_for('static', path='/favicon.ico') }}"/>
-    <title>♠ PyLabar</title>
+    <!-- htmx -->
     <script src="https://unpkg.com/htmx.org@1.9.8"></script>
+    <!-- Tailwind CSS and DaisyUI from CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.3.1/dist/full.min.css" rel="stylesheet" type="text/css"/>       
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet"/>
+    <!-- Font Awesome: a comprehensive set of icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.2/dist/full.css" rel="stylesheet" type="text/css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet"/>
-    
-<style>
-        .dropdown {
-          position: relative;
-          display: inline-block;
-        }
 
-        .dropdown-content {
-          display: none;
-          position: absolute;
-          background-color: #fff;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          z-index: 1;
-        }
+  <style>
+          .dropdown {
+            position: relative;
+            display: inline-block;
+          }
 
-        .dropdown:hover .dropdown-content {
-          display: block;
-        }
-
-        .dropdown-btn {
-          color: #fff;
-          border-radius: 5px;
-          padding: 10px 15px;
-          cursor: pointer;
-          transition: background-color 0.3s, color 0.3s;
-        }
-
-        .dropdown-btn:hover {
-          background-color: #0056b3;
-        }
-
-        .center-btn {
-          text-align: center;
-        }
-
-        .bordered-dropdown {
-          padding: 10px;
-        }
-
-        .bordered-dropdown a {
-          text-decoration: none;
-          color: #333;
-          padding: 10px;
-          display: block;
-          transition: color 0.3s;
-        }
-
-        .bordered-dropdown a:hover {
-          color: #f7fbff;
-          background-color: transparent;
-        }
-
-        .blue-text {
-          color: rgb(59 130 246 / var(--tw-bg-opacity));
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        header {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-
-        footer {
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-            z-index: 1000;
-        }
-
-        .padding-top {
-          padding-top: 80px;
-        }
-
-        .hidden {
+          .dropdown-content {
             display: none;
-        }
-</style>
+            position: absolute;
+            background-color: bg-glass;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+          }
+
+          .dropdown:hover .dropdown-content {
+            display: block;
+          }
+
+          .dropdown-btn {
+            color: bg-primary;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+          }
+
+          .dropdown-btn:hover {
+            background-color: bg-primary;
+          }
+
+          .center-btn {
+            text-align: center;
+          }
+
+          .bordered-dropdown {
+            padding: 10px;
+          }
+
+          .bordered-dropdown a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px;
+            display: block;
+            transition: color 0.3s;
+          }
+
+          .bordered-dropdown a:hover {
+            color: #f7fbff;
+            background-color: transparent;
+          }
+
+          .blue-text {
+            color: rgb(59 130 246 / var(--tw-bg-opacity));
+          }
+
+          body {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+              display: flex;
+              flex-direction: column;
+              min-height: 100vh;
+          }
+
+          header {
+              position: fixed;
+              width: 100%;
+              top: 0;
+              z-index: 1000;
+          }
+
+          footer {
+              position: fixed;
+              width: 100%;
+              bottom: 0;
+              z-index: 1000;
+          }
+
+          .padding-top {
+            padding-top: 80px;
+          }
+
+          .hidden {
+              display: none;
+          }
+  </style>
 </head>
 
-<body class="bg-slate-100">
-<header class="bg-blue-500 text-white py-4">
+<body class="bg-neutral-content">
+<header class="bg-neutral  py-4">
     <div class="container mx-auto flex justify-between">
         <h1 class="text-xl font-bold pylabartitle">♠ PyLabar ♠</h1>
         <nav class="flex items-center gap-4">
@@ -112,7 +112,7 @@
                     {{ username }} &#9660;
                 </button>
                 <div id="user-menu" class="dropdown-content bordered-dropdown">
-                    <a href="{{ url_for('logout_user') }}" class="btn btn-sm btn-ghost center-btn blue-text">Logout</a>
+                    <a href="{{ url_for('logout_user') }}" class="btn btn-sm btn-ghost center-btn text-neutral">Logout</a>
                 </div>
                 {% endif %}
             </div>
@@ -124,18 +124,26 @@
       <div class="w-full mx-auto" id="content">
         {% if username %}
         <nav class="flex items-right gap-4 padding-top">
-          <a href="#" class="btn btn-sm bg-blue-500 text-white border-0 ml-auto" hx-get="/groups/create" hx-target="#content" hx-trigger="click">New Group</a>
-          <a href="#" class="btn btn-sm bg-blue-500 text-white border-0" hx-get="/topics/newtopic" hx-target="#content" hx-trigger="click" id="new-topic-button">New Topic</a>
+          <a href="#" class="btn btn-sm bg-neutral  border-0 ml-auto" hx-get="/groups/create" hx-target="#content" hx-trigger="click">New Group</a>
+          <a href="#" class="btn btn-sm bg-neutral  border-0" hx-get="/topics/newtopic" hx-target="#content" hx-trigger="click" id="new-topic-button">New Topic</a>
         </nav>
         {% endif %}
           {% block content %}{% endblock %}
       </div>
   </div>
 </main>
-<footer class="bg-blue-500 text-white py-4 mt-auto">
-    <div class="container mx-auto">
-        <p class="text-center">&copy; 2023 - ♠ Pylabar ♠</p>
-    </div>
+<footer class="footer p-10 bg-glass p-4 shadow-lg bg-neutral">
+  <div class="flex-1">
+    <p class="text-center">&copy; 2023 - ♠ Pylabar ♠ - All rights reserved</p>
+  </div>
+  <div class="flex-1"></div>
+  <div class="flex-1">
+    <a href="https://github.com/ThePhrontistery/py-labar/" target="_blank" class="flex justify-center">
+    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 1C5.373 1 0 6.373 0 13c0 5.302 3.438 9.8 8.207 11.387.6.113.793-.26.793-.577 0-.285-.01-1.04-.016-2.04-3.338.725-4.043-1.61-4.043-1.61-.546-1.387-1.332-1.754-1.332-1.754-1.09-.745.082-.729.082-.729 1.205.084 1.839 1.238 1.839 1.238 1.07 1.835 2.807 1.305 3.492.998.109-.776.42-1.305.763-1.604-2.665-.302-5.466-1.333-5.466-5.932 0-1.312.468-2.384 1.235-3.222-.125-.303-.535-1.517.117-3.16 0 0 1.007-.322 3.3 1.23.957-.266 1.983-.398 3.003-.403 1.02.005 2.047.137 3.006.403 2.291-1.552 3.297-1.23 3.297-1.23.653 1.643.243 2.857.12 3.16.768.838 1.233 1.91 1.233 3.222 0 4.61-2.805 5.63-5.475 5.93.431.37.815 1.1.815 2.217 0 1.6-.015 2.888-.015 3.286 0 .319.192.694.797.576C20.565 22.8 24 18.302 24 13c0-6.627-5.373-12-12-12z"/>
+    </svg>
+    </a>
+  </div>
 </footer>
 
 </body>
