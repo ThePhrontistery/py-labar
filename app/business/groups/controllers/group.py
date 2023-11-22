@@ -71,3 +71,26 @@ async def create_group(
 
     return RedirectResponse(url=PATH_FOR_RETURN_HOME, status_code=302)
 
+
+@router.post("/update_users")
+def update_users(
+        request: Request
+):
+    """
+    Handle the request to update users.
+
+    This endpoint logs the request URL and returns a confirmation message indicating that the users have been updated. The actual user update logic is not implemented within this function, and should be handled separately.
+
+    Args:
+        request (Request): The request object containing details of the incoming HTTP request.
+
+    Returns:
+        dict: A dictionary with a message indicating the completion of the user update process.
+
+    Note:
+        This function is a stub and does not perform any actual user update operations. It should be further implemented to handle the user update logic.
+    """
+    print(request.url)
+    # Lógica para manejar la actualización de usuarios
+    # ...
+    return {"message": "Usuarios actualizados"}
